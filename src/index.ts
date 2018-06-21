@@ -8,8 +8,8 @@ declare module 'leaflet' {
         cursor?: string;
     }
 
-    export interface LassoSelectedEvent extends LeafletEvent {
-        polygon: LatLng[];
+    export interface LassoFinishedEvent extends LeafletEvent {
+        latLngs: LatLng[];
         layers: Layer[];
     }
 

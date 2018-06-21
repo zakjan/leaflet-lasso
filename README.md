@@ -6,5 +6,6 @@ True lasso selection plugin for Leaflet. [Demo](http://zakjan.github.io/leaflet-
 
 ## TODO
 
-- L.Control
+- support markers hidden by L.MarkerClusterGroup
 - support also other layer types, not just markers (with @turf/intersect)
+- add L.Control
