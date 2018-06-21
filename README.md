@@ -2,7 +2,7 @@
 
 True lasso selection plugin for Leaflet. [Demo](http://zakjan.github.io/leaflet-lasso/docs/index.html)
 
-![screenshot](docs/screenshot.png)
+![screenshot](http://zakjan.github.io/leaflet-lasso/docs/screenshot.png)
 
 ## TODO
 
