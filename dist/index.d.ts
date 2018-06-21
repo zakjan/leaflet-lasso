@@ -3,8 +3,8 @@ declare module 'leaflet' {
         polygon?: PolylineOptions;
         cursor?: string;
     }
-    interface LassoSelectedEvent extends LeafletEvent {
-        polygon: LatLng[];
+    interface LassoFinishedEvent extends LeafletEvent {
+        latLngs: LatLng[];
         layers: Layer[];
     }
     class Lasso extends Handler {

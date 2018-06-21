@@ -72,7 +72,6 @@ var Lasso = L.Handler.extend({
                 var layerGeometry = layer.toGeoJSON().geometry;
                 contains = boolean_point_in_polygon_1.default(layerGeometry, lassoPolygonGeometry);
             }
-            // TODO: support also other layer types, not just markers
             if (contains) {
                 selectedLayers.push(layer);
             }
