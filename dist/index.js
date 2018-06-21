@@ -52,7 +52,7 @@ var Lasso = L.Handler.extend({
         }
         var selectedFeatures = this.getSelectedFeatures(this.polygon);
         this.map.fire('lasso.finished', {
-            latLngs: this.polygon.getLatLngs(),
+            latLngs: this.polygon.getLatLngs()[0],
             layers: selectedFeatures,
         });
         this.map.removeLayer(this.polygon);
