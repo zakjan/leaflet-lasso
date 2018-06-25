@@ -67,6 +67,16 @@ var Lasso = L.Handler.extend({
             if (layer === _this.polygon) {
                 return;
             }
+            if (layer instanceof L.MarkerCluster) {
+            	var children = layer.getAllChildMarkers();
+            	if (children)
+            		children.forEach(function(child) {
+            			if (child instanceof L.Marker && boolean_point_in_polygon_1.default(child.toGeoJSON().geometry, lassoPolygonGeometry) ) {
+            				selectedLayers.push(child);
+            			}
+            		});
+        		return;
+            }
             var contains = false;
             if (layer instanceof L.Marker) {
                 var layerGeometry = layer.toGeoJSON().geometry;
