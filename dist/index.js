@@ -67,7 +67,7 @@ var Lasso = L.Handler.extend({
             if (layer === _this.polygon) {
                 return;
             }
-            if (layer instanceof L.MarkerCluster) {
+            if (L.MarkerCluster && layer instanceof L.MarkerCluster) {
             	var children = layer.getAllChildMarkers();
             	if (children)
             		children.forEach(function(child) {
