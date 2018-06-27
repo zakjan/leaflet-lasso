@@ -35,6 +35,9 @@ var Lasso = L.Handler.extend({
         this.map.fire('lasso.disabled');
     },
     onMouseDown: function (event) {
+        if (this.polygon) { // lost one mouseup event eg because another map control "stole" it
+            return;
+        }
         var event2 = event;
         this.polygon = L.polygon([event2.latlng], this.options.polygon).addTo(this.map);
         this.map.on('mousemove', this.onMouseMove, this);
