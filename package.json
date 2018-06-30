@@ -2,8 +2,11 @@
   "name": "leaflet-lasso",
   "version": "1.0.4",
   "description": "Leaflet plugin for lasso selection",
+  "keywords": [
+    "leaflet"
+  ],
   "author": "Jan Zak <zj@zakjan.cz>",
-  "licence": "MIT",
+  "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
