@@ -11,7 +11,7 @@ True lasso selection plugin for Leaflet. [Demo](http://zakjan.github.io/leaflet-
 
 or
 
-- `<script src="http://unpkg.com/leaflet-lasso@1.0.4/dist/leaflet-lasso.min.js"></script>`
+- `<script src="http://unpkg.com/leaflet-lasso@latest/dist/leaflet-lasso.min.js"></script>`
 
 ## Usage
 
