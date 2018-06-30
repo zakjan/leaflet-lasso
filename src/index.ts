@@ -80,7 +80,7 @@ const Lasso = L.Handler.extend({
             return;
         }
 
-        const selectedFeatures = this.getSelectedFeatures(this.polygon);
+        const selectedFeatures = this.getSelectedLayers(this.polygon);
         this.map.fire('lasso.finished', {
             latLngs: this.polygon.getLatLngs()[0],
             layers: selectedFeatures,
@@ -91,7 +91,7 @@ const Lasso = L.Handler.extend({
         this.disable();
     },
     
-    getSelectedFeatures(polygon: L.Polygon) {
+    getSelectedLayers(polygon: L.Polygon) {
         const selectedLayers: L.Layer[] = [];
 
         const lassoPolygonGeometry = polygon.toGeoJSON().geometry;
