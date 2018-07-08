@@ -50,7 +50,7 @@
         const lngDelta = latDelta * 2;
         const startLatLng = [centerLatLng[0] - latDelta, centerLatLng[1] - lngDelta];
 
-        const layerGroup = L.layerGroup().addTo(map); // tests that also layers nested in groups can be selected
+        const layerGroup = L.layerGroup().addTo(map); // test that also layers nested in groups can be selected
         const markerClusterGroup = L.markerClusterGroup().addTo(layerGroup);
         for (let i = 0; i < 9; i++) {
             const latLng = [startLatLng[0] + Math.floor(i / 3) * latDelta, startLatLng[1] + (i % 3) * lngDelta];
@@ -59,7 +59,7 @@
 
         const lasso = L.lasso(map);
         map.on('lasso.finished', (event) => {
-            lassoResult.innerHTML = `${event.layers.length} layers:<br>` + event.layers.map(layer => `${layer.getLatLng().lat}, ${layer.getLatLng().lng}`).join('<br>');
+            lassoResult.innerHTML = `${event.layers.length} layers:<br>` + event.layers.map(layer => `${L.Util.formatNum(layer.getLatLng().lat)}, ${L.Util.formatNum(layer.getLatLng().lng)}`).join('<br>');
         });
         map.on('lasso.enabled', () => {
             lassoEnabled.innerHTML = 'Enabled';
