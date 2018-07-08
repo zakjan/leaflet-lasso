@@ -50,7 +50,8 @@
         const lngDelta = latDelta * 2;
         const startLatLng = [centerLatLng[0] - latDelta, centerLatLng[1] - lngDelta];
 
-        const markerClusterGroup = L.markerClusterGroup().addTo(map);
+        const layerGroup = L.layerGroup().addTo(map); // tests that also layers nested in groups can be selected
+        const markerClusterGroup = L.markerClusterGroup().addTo(layerGroup);
         for (let i = 0; i < 9; i++) {
             const latLng = [startLatLng[0] + Math.floor(i / 3) * latDelta, startLatLng[1] + (i % 3) * lngDelta];
             L.marker(latLng).addTo(markerClusterGroup);
