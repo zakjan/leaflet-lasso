@@ -50,7 +50,7 @@ var Lasso = L.Handler.extend({
         if (!this.polygon) {
             return;
         }
-        var selectedFeatures = this.getSelectedFeatures(this.polygon);
+        var selectedFeatures = this.getSelectedLayers(this.polygon);
         this.map.fire('lasso.finished', {
             latLngs: this.polygon.getLatLngs()[0],
             layers: selectedFeatures,
@@ -59,22 +59,28 @@ var Lasso = L.Handler.extend({
         this.polygon = undefined;
         this.disable();
     },
-    getSelectedFeatures: function (polygon) {
+    getSelectedLayers: function (polygon) {
         var _this = this;
-        var selectedLayers = [];
         var lassoPolygonGeometry = polygon.toGeoJSON().geometry;
+        var layers = [];
         this.map.eachLayer(function (layer) {
             if (layer === _this.polygon) {
                 return;
             }
+            if (L.MarkerCluster && layer instanceof L.MarkerCluster) {
+                layers.push.apply(layers, layer.getAllChildMarkers());
+            }
+            else {
+                layers.push(layer);
+            }
+        });
+        var selectedLayers = layers.filter(function (layer) {
             var contains = false;
             if (layer instanceof L.Marker) {
                 var layerGeometry = layer.toGeoJSON().geometry;
                 contains = boolean_point_in_polygon_1.default(layerGeometry, lassoPolygonGeometry);
             }
-            if (contains) {
-                selectedLayers.push(layer);
-            }
+            return contains;
         });
         return selectedLayers;
     },

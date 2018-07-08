@@ -11,7 +11,7 @@ True lasso selection plugin for Leaflet. [Demo](http://zakjan.github.io/leaflet-
 
 or
 
-- `<script src="http://unpkg.com/leaflet-lasso@latest/dist/leaflet-lasso.min.js"></script>`
+- `<script src="https://unpkg.com/leaflet-lasso@latest/dist/leaflet-lasso.min.js"></script>`
 
 ## Usage
 
@@ -36,6 +36,5 @@ map.on('lasso.finished', (event) => {
 
 ## TODO
 
-- support markers hidden by L.MarkerClusterGroup
 - support also other layer types, not just markers (with @turf/intersect)
 - add L.Control

@@ -92,24 +92,29 @@ const Lasso = L.Handler.extend({
     },
     
     getSelectedLayers(polygon: L.Polygon) {
-        const selectedLayers: L.Layer[] = [];
-
         const lassoPolygonGeometry = polygon.toGeoJSON().geometry;
     
+        const layers: L.Layer[] = [];
         this.map.eachLayer((layer: L.Layer) => {
             if (layer === this.polygon) {
                 return;
             }
-            
+
+            if (L.MarkerCluster && layer instanceof L.MarkerCluster) {
+                layers.push(...layer.getAllChildMarkers());
+            } else {
+                layers.push(layer);
+            }
+        });
+
+        const selectedLayers = layers.filter(layer => {
             let contains = false;
             if (layer instanceof L.Marker) {
                 const layerGeometry = layer.toGeoJSON().geometry;
                 contains = booleanPointInPolygon(layerGeometry, lassoPolygonGeometry);
             }
 
-            if (contains) {
-                selectedLayers.push(layer);
-            }
+            return contains;
         });
         
         return selectedLayers;
