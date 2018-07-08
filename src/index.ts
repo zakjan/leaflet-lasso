@@ -108,13 +108,11 @@ const Lasso = L.Handler.extend({
         });
 
         const selectedLayers = layers.filter(layer => {
-            let contains = false;
             if (layer instanceof L.Marker) {
                 const layerGeometry = layer.toGeoJSON().geometry;
-                contains = booleanPointInPolygon(layerGeometry, lassoPolygonGeometry);
+                return booleanPointInPolygon(layerGeometry, lassoPolygonGeometry);
             }
-
-            return contains;
+            return false;
         });
         
         return selectedLayers;
