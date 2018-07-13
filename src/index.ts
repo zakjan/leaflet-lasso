@@ -3,6 +3,12 @@ import { LeafletEvent, LeafletMouseEvent } from 'leaflet';
 import booleanPointInPolygon from '@turf/boolean-point-in-polygon';
 
 declare module 'leaflet' {
+    class MarkerCluster extends Marker {
+        getAllChildMarkers(): Marker[];
+	}
+}
+
+declare module 'leaflet' {
     export interface LassoOptions {
         polygon?: PolylineOptions,
         cursor?: string;
@@ -60,6 +66,9 @@ const Lasso = L.Handler.extend({
     },
 
     onMouseDown(event: LeafletEvent) {
+        if (this.polygon) { // lost one mouseup event eg because another map control "stole" it, thus ignore this and continue
+            return;
+        }    	
         const event2 = event as LeafletMouseEvent;
         this.polygon = L.polygon([event2.latlng], this.options.polygon).addTo(this.map);
 
@@ -99,6 +108,18 @@ const Lasso = L.Handler.extend({
         this.map.eachLayer((layer: L.Layer) => {
             if (layer === this.polygon) {
                 return;
+            }
+            
+            if (L.MarkerCluster && layer instanceof L.MarkerCluster) {
+				const children = (layer as L.MarkerCluster).getAllChildMarkers();
+				if (children) {
+					for (let child of children)  {
+						if (child instanceof L.Marker && booleanPointInPolygon(child.toGeoJSON().geometry, lassoPolygonGeometry) ) {
+							selectedLayers.push(child);
+						}
+					}
+				}
+				return;
             }
             
             let contains = false;

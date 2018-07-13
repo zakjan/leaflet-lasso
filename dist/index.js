@@ -35,7 +35,7 @@ var Lasso = L.Handler.extend({
         this.map.fire('lasso.disabled');
     },
     onMouseDown: function (event) {
-        if (this.polygon) { // lost one mouseup event eg because another map control "stole" it
+        if (this.polygon) {
             return;
         }
         var event2 = event;
@@ -71,14 +71,16 @@ var Lasso = L.Handler.extend({
                 return;
             }
             if (L.MarkerCluster && layer instanceof L.MarkerCluster) {
-            	var children = layer.getAllChildMarkers();
-            	if (children)
-            		children.forEach(function(child) {
-            			if (child instanceof L.Marker && boolean_point_in_polygon_1.default(child.toGeoJSON().geometry, lassoPolygonGeometry) ) {
-            				selectedLayers.push(child);
-            			}
-            		});
-        		return;
+                var children = layer.getAllChildMarkers();
+                if (children) {
+                    for (var _i = 0, children_1 = children; _i < children_1.length; _i++) {
+                        var child = children_1[_i];
+                        if (child instanceof L.Marker && boolean_point_in_polygon_1.default(child.toGeoJSON().geometry, lassoPolygonGeometry)) {
+                            selectedLayers.push(child);
+                        }
+                    }
+                }
+                return;
             }
             var contains = false;
             if (layer instanceof L.Marker) {
@@ -96,3 +98,4 @@ L.Lasso = Lasso;
 L.lasso = function (map, options) {
     return new Lasso(map, options);
 };
+//# sourceMappingURL=index.js.map
