@@ -60,6 +60,9 @@ const Lasso = L.Handler.extend({
     },
 
     onMouseDown(event: LeafletEvent) {
+        if (this.polygon) { // lost one mouseup event eg because another map control "stole" it, thus ignore this and continue
+            return;
+        }    	
         const event2 = event as LeafletMouseEvent;
         this.polygon = L.polygon([event2.latlng], this.options.polygon).addTo(this.map);
 

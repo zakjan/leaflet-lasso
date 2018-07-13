@@ -35,6 +35,9 @@ var Lasso = L.Handler.extend({
         this.map.fire('lasso.disabled');
     },
     onMouseDown: function (event) {
+        if (this.polygon) {
+            return;
+        }
         var event2 = event;
         this.polygon = L.polygon([event2.latlng], this.options.polygon).addTo(this.map);
         this.map.on('mousemove', this.onMouseMove, this);
@@ -75,12 +78,11 @@ var Lasso = L.Handler.extend({
             }
         });
         var selectedLayers = layers.filter(function (layer) {
-            var contains = false;
             if (layer instanceof L.Marker) {
                 var layerGeometry = layer.toGeoJSON().geometry;
-                contains = boolean_point_in_polygon_1.default(layerGeometry, lassoPolygonGeometry);
+                return boolean_point_in_polygon_1.default(layerGeometry, lassoPolygonGeometry);
             }
-            return contains;
+            return false;
         });
         return selectedLayers;
     },
@@ -89,3 +91,4 @@ L.Lasso = Lasso;
 L.lasso = function (map, options) {
     return new Lasso(map, options);
 };
+//# sourceMappingURL=index.js.map
