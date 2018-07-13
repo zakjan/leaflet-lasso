@@ -53,7 +53,7 @@ var Lasso = L.Handler.extend({
         if (!this.polygon) {
             return;
         }
-        var selectedFeatures = this.getSelectedFeatures(this.polygon);
+        var selectedFeatures = this.getSelectedLayers(this.polygon);
         this.map.fire('lasso.finished', {
             latLngs: this.polygon.getLatLngs()[0],
             layers: selectedFeatures,
@@ -62,34 +62,27 @@ var Lasso = L.Handler.extend({
         this.polygon = undefined;
         this.disable();
     },
-    getSelectedFeatures: function (polygon) {
+    getSelectedLayers: function (polygon) {
         var _this = this;
-        var selectedLayers = [];
         var lassoPolygonGeometry = polygon.toGeoJSON().geometry;
+        var layers = [];
         this.map.eachLayer(function (layer) {
             if (layer === _this.polygon) {
                 return;
             }
             if (L.MarkerCluster && layer instanceof L.MarkerCluster) {
-                var children = layer.getAllChildMarkers();
-                if (children) {
-                    for (var _i = 0, children_1 = children; _i < children_1.length; _i++) {
-                        var child = children_1[_i];
-                        if (child instanceof L.Marker && boolean_point_in_polygon_1.default(child.toGeoJSON().geometry, lassoPolygonGeometry)) {
-                            selectedLayers.push(child);
-                        }
-                    }
-                }
-                return;
+                layers.push.apply(layers, layer.getAllChildMarkers());
             }
-            var contains = false;
+            else {
+                layers.push(layer);
+            }
+        });
+        var selectedLayers = layers.filter(function (layer) {
             if (layer instanceof L.Marker) {
                 var layerGeometry = layer.toGeoJSON().geometry;
-                contains = boolean_point_in_polygon_1.default(layerGeometry, lassoPolygonGeometry);
+                return boolean_point_in_polygon_1.default(layerGeometry, lassoPolygonGeometry);
             }
-            if (contains) {
-                selectedLayers.push(layer);
-            }
+            return false;
         });
         return selectedLayers;
     },

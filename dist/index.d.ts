@@ -1,9 +1,4 @@
 declare module 'leaflet' {
-    class MarkerCluster extends Marker {
-        getAllChildMarkers(): Marker[];
-    }
-}
-declare module 'leaflet' {
     interface LassoOptions {
         polygon?: PolylineOptions;
         cursor?: string;

@@ -3,12 +3,6 @@ import { LeafletEvent, LeafletMouseEvent } from 'leaflet';
 import booleanPointInPolygon from '@turf/boolean-point-in-polygon';
 
 declare module 'leaflet' {
-    class MarkerCluster extends Marker {
-        getAllChildMarkers(): Marker[];
-	}
-}
-
-declare module 'leaflet' {
     export interface LassoOptions {
         polygon?: PolylineOptions,
         cursor?: string;
@@ -89,7 +83,7 @@ const Lasso = L.Handler.extend({
             return;
         }
 
-        const selectedFeatures = this.getSelectedFeatures(this.polygon);
+        const selectedFeatures = this.getSelectedLayers(this.polygon);
         this.map.fire('lasso.finished', {
             latLngs: this.polygon.getLatLngs()[0],
             layers: selectedFeatures,
@@ -100,37 +94,28 @@ const Lasso = L.Handler.extend({
         this.disable();
     },
     
-    getSelectedFeatures(polygon: L.Polygon) {
-        const selectedLayers: L.Layer[] = [];
-
+    getSelectedLayers(polygon: L.Polygon) {
         const lassoPolygonGeometry = polygon.toGeoJSON().geometry;
     
+        const layers: L.Layer[] = [];
         this.map.eachLayer((layer: L.Layer) => {
             if (layer === this.polygon) {
                 return;
             }
-            
+
             if (L.MarkerCluster && layer instanceof L.MarkerCluster) {
-				const children = (layer as L.MarkerCluster).getAllChildMarkers();
-				if (children) {
-					for (let child of children)  {
-						if (child instanceof L.Marker && booleanPointInPolygon(child.toGeoJSON().geometry, lassoPolygonGeometry) ) {
-							selectedLayers.push(child);
-						}
-					}
-				}
-				return;
+                layers.push(...layer.getAllChildMarkers());
+            } else {
+                layers.push(layer);
             }
-            
-            let contains = false;
+        });
+
+        const selectedLayers = layers.filter(layer => {
             if (layer instanceof L.Marker) {
                 const layerGeometry = layer.toGeoJSON().geometry;
-                contains = booleanPointInPolygon(layerGeometry, lassoPolygonGeometry);
+                return booleanPointInPolygon(layerGeometry, lassoPolygonGeometry);
             }
-
-            if (contains) {
-                selectedLayers.push(layer);
-            }
+            return false;
         });
         
         return selectedLayers;
