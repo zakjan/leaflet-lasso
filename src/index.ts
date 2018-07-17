@@ -41,7 +41,7 @@ const Lasso = L.Handler.extend({
     addHooks() {
         this.map.on('mousedown', this.onMouseDown, this);
         this.map.on('mouseup', this.onMouseUp, this);
-        document.addEventListener('mouseup', this.onMouseUpBound);
+        document.addEventListener('mouseup', this.onMouseUpBound, true);
         
         this.map.getContainer().style.cursor = this.options.cursor || '';
         this.map.dragging.disable();
