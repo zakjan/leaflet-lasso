@@ -44,6 +44,11 @@ const Lasso = L.Handler.extend({
         document.addEventListener('mouseup', this.onMouseUpBound, true);
         
         this.map.getContainer().style.cursor = this.options.cursor || '';
+        document.body.style.userSelect = 'none';
+        document.body.style.msUserSelect = 'none';
+        (document.body.style as any).mozUserSelect = 'none'; // missing typings
+        document.body.style.webkitUserSelect = 'none';
+
         this.map.dragging.disable();
         this.map.fire('lasso.enabled');
     },
@@ -55,6 +60,11 @@ const Lasso = L.Handler.extend({
         document.removeEventListener('mouseup', this.onMouseUpBound);
 
         this.map.getContainer().style.cursor = '';
+        document.body.style.userSelect = '';
+        document.body.style.msUserSelect = '';
+        (document.body.style as any).mozUserSelect = ''; // missing typings
+        document.body.style.webkitUserSelect = '';
+
         this.map.dragging.enable();
         this.map.fire('lasso.disabled');
     },
