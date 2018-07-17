@@ -20,7 +20,7 @@ var Lasso = L.Handler.extend({
     addHooks: function () {
         this.map.on('mousedown', this.onMouseDown, this);
         this.map.on('mouseup', this.onMouseUp, this);
-        document.addEventListener('mouseup', this.onMouseUpBound);
+        document.addEventListener('mouseup', this.onMouseUpBound, true);
         this.map.getContainer().style.cursor = this.options.cursor || '';
         this.map.dragging.disable();
         this.map.fire('lasso.enabled');
@@ -75,12 +75,11 @@ var Lasso = L.Handler.extend({
             }
         });
         var selectedLayers = layers.filter(function (layer) {
-            var contains = false;
             if (layer instanceof L.Marker) {
                 var layerGeometry = layer.toGeoJSON().geometry;
-                contains = boolean_point_in_polygon_1.default(layerGeometry, lassoPolygonGeometry);
+                return boolean_point_in_polygon_1.default(layerGeometry, lassoPolygonGeometry);
             }
-            return contains;
+            return false;
         });
         return selectedLayers;
     },
