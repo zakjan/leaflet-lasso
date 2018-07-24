@@ -6,12 +6,16 @@ True lasso selection plugin for Leaflet. [Demo](http://zakjan.github.io/leaflet-
 
 ## Install
 
-- `npm install leaflet-lasso`
-- `import "leaflet-lasso"`
+```
+npm install leaflet-lasso
+import "leaflet-lasso"
+```
 
 or
 
-- `<script src="https://unpkg.com/leaflet-lasso@latest/dist/leaflet-lasso.min.js"></script>`
+```
+<script src="https://unpkg.com/leaflet-lasso@latest/dist/leaflet-lasso.min.js"></script>
+```
 
 ## Usage
 
@@ -33,8 +37,3 @@ map.on('lasso.finished', (event) => {
 - `lasso.finished`
 - `lasso.enabled`
 - `lasso.disabled`
-
-## TODO
-
-- support also other layer types, not just markers (with @turf/intersect)
-- add L.Control
