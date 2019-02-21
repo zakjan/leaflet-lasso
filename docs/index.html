@@ -54,13 +54,32 @@
         const markerClusterGroup = L.markerClusterGroup().addTo(layerGroup);
         for (let i = 0; i < 9; i++) {
             const latLng = [startLatLng[0] + Math.floor(i / 3) * latDelta, startLatLng[1] + (i % 3) * lngDelta];
-            L.marker(latLng).addTo(markerClusterGroup);
+            if(i%2==0){
+                L.circle(latLng,300).addTo(markerClusterGroup);
+            }else{
+                L.marker(latLng).addTo(markerClusterGroup);
+            }
         }
 
         const lasso = L.lasso(map);
         map.on('lasso.finished', (event) => {
-            lassoResult.innerHTML = `${event.layers.length} layers:<br>` + event.layers.map(layer => `${L.Util.formatNum(layer.getLatLng().lat)}, ${L.Util.formatNum(layer.getLatLng().lng)}`).join('<br>');
+            var len =event.layers.length;
+            var items = [];
+            event.layers.forEach((layer) => {
+                var type = "";
+                if(layer instanceof L.Marker){
+                    type = "Marker: ";
+                }else{
+                    type = "Circle: ";
+                }
+                var coords = L.Util.formatNum(layer.getLatLng().lat) + ", "+ L.Util.formatNum(layer.getLatLng().lng);
+                var str = type + coords;
+                items.push(str);
+            });
+            lassoResult.innerHTML = items.join('<br>');
         });
+
+
         map.on('lasso.enabled', () => {
             lassoEnabled.innerHTML = 'Enabled';
             lassoResult.innerHTML = '';
@@ -69,13 +88,16 @@
             lassoEnabled.innerHTML = 'Disabled';
         });
 
-        toggleLasso.addEventListener('click', function() {
+       toggleLasso.addEventListener('click', function() {
             if (lasso.enabled()) {
                 lasso.disable();
             } else {
                 lasso.enable();
             }
         });
+
+        //Or create a Leaflet-Control
+        const lasso2 = L.control.lasso({polygon:{color:'#000'}}).addTo(map);
     </script>
 </body>
 </html>

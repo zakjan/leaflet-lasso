@@ -26,6 +26,6 @@
     "leaflet.markercluster": "^1.3.0"
   },
   "dependencies": {
-    "@turf/boolean-point-in-polygon": "^6.0.1"
+    "@turf/boolean-within": "^6.0.1"
   }
 }
