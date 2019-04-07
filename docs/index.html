@@ -1,4 +1,5 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
     <title>Leaflet Lasso</title>
     <script src="https://unpkg.com/leaflet@1.3.1/dist/leaflet.js"></script>
@@ -18,64 +19,87 @@
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>leaflet-lasso</h1>
-        <p>True lasso selection plugin for Leaflet</p>
-        <hr>
+<div class="container">
+    <h1>leaflet-lasso</h1>
+    <p>True lasso selection plugin for Leaflet</p>
+    <hr>
 
-        <div id="map"></div>
-        <div id="sidebar">
-            <div><button id="toggleLasso" type="button" class="btn btn-primary btn-sm">Toggle Lasso</button></div>
-            <br>
-            <div id="lassoEnabled">Disabled</div>
-            <br>
-            <div id="lassoResult"></div>
-        </div>
+    <div id="map"></div>
+    <div id="sidebar">
+        <div><button id="toggleLasso" type="button" class="btn btn-primary btn-sm">Toggle Lasso</button></div>
+        <br>
+        <div id="lassoEnabled">Disabled</div>
+        <br>
+        <div id="lassoResult"></div>
     </div>
+</div>
 
-    <script>
-        const mapElement = document.querySelector('#map');
-        const toggleLasso = document.querySelector("#toggleLasso");
-        const lassoEnabled = document.querySelector("#lassoEnabled");
-        const lassoResult = document.querySelector("#lassoResult");
+<script>
+    const mapElement = document.querySelector('#map');
+    const toggleLasso = document.querySelector("#toggleLasso");
+    const lassoEnabled = document.querySelector("#lassoEnabled");
+    const lassoResult = document.querySelector("#lassoResult");
 
-        const map = L.map(mapElement);
-        const centerLatLng = [51.5, -0.09];
-        map.setView(centerLatLng, 13);
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        }).addTo(map);
+    const map = L.map(mapElement);
+    const centerLatLng = [51.5, -0.09];
+    map.setView(centerLatLng, 13);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
 
-        const latDelta = 0.01;
-        const lngDelta = latDelta * 2;
-        const startLatLng = [centerLatLng[0] - latDelta, centerLatLng[1] - lngDelta];
+    const latDelta = 0.01;
+    const lngDelta = latDelta * 2;
+    const startLatLng = [centerLatLng[0] - latDelta, centerLatLng[1] - lngDelta];
 
-        const layerGroup = L.layerGroup().addTo(map); // test that also layers nested in groups can be selected
-        const markerClusterGroup = L.markerClusterGroup().addTo(layerGroup);
-        for (let i = 0; i < 9; i++) {
-            const latLng = [startLatLng[0] + Math.floor(i / 3) * latDelta, startLatLng[1] + (i % 3) * lngDelta];
+    const layerGroup = L.layerGroup().addTo(map); // test that also layers nested in groups can be selected
+    const markerClusterGroup = L.markerClusterGroup().addTo(layerGroup);
+    for (let i = 0; i < 9; i++) {
+        const latLng = [startLatLng[0] + Math.floor(i / 3) * latDelta, startLatLng[1] + (i % 3) * lngDelta];
+        if(i%2==0){
+            L.circle(latLng,300).addTo(markerClusterGroup);
+        }else{
             L.marker(latLng).addTo(markerClusterGroup);
         }
+    }
 
-        const lasso = L.lasso(map);
-        map.on('lasso.finished', (event) => {
-            lassoResult.innerHTML = `${event.layers.length} layers:<br>` + event.layers.map(layer => `${L.Util.formatNum(layer.getLatLng().lat)}, ${L.Util.formatNum(layer.getLatLng().lng)}`).join('<br>');
-        });
-        map.on('lasso.enabled', () => {
-            lassoEnabled.innerHTML = 'Enabled';
-            lassoResult.innerHTML = '';
-        });
-        map.on('lasso.disabled', () => {
-            lassoEnabled.innerHTML = 'Disabled';
-        });
+    //Use Lasso in code
+    const lasso = L.lasso(map);
 
-        toggleLasso.addEventListener('click', function() {
-            if (lasso.enabled()) {
-                lasso.disable();
-            } else {
-                lasso.enable();
+    //Or create a Leaflet-Control
+    const lasso2 = L.control.lasso({polygon:{color:'#000'}}).addTo(map);
+
+    map.on('lasso.finished', (event) => {
+        var items = [];
+        event.layers.forEach((layer) => {
+            var type = "";
+            if(layer instanceof L.Marker){
+                type = "Marker: ";
+            }else{
+                type = "Circle: ";
             }
+            var coords = L.Util.formatNum(layer.getLatLng().lat) + ", "+ L.Util.formatNum(layer.getLatLng().lng);
+            var str = type + coords;
+            items.push(str);
         });
-    </script>
+        lassoResult.innerHTML = items.join('<br>');
+    });
+
+
+    map.on('lasso.enabled', () => {
+        lassoEnabled.innerHTML = 'Enabled';
+        lassoResult.innerHTML = '';
+    });
+    map.on('lasso.disabled', () => {
+        lassoEnabled.innerHTML = 'Disabled';
+    });
+
+    toggleLasso.addEventListener('click', function() {
+        if (lasso.enabled()) {
+            lasso.disable();
+        } else {
+            lasso.enable();
+        }
+    });
+</script>
 </body>
 </html>
