@@ -1,6 +1,6 @@
 import * as L from 'leaflet';
 import { LeafletEvent, LeafletMouseEvent } from 'leaflet';
-import booleanPointInPolygon from '@turf/boolean-point-in-polygon';
+import boolean_within from '@turf/boolean-within';
 
 declare module 'leaflet' {
     export interface LassoOptions {
@@ -19,6 +19,9 @@ declare module 'leaflet' {
 
     export const lasso: (map: Map, options?: LassoOptions) => Lasso;
 }
+
+
+
 
 const Lasso = L.Handler.extend({
     options: {
@@ -120,9 +123,9 @@ const Lasso = L.Handler.extend({
         });
 
         const selectedLayers = layers.filter(layer => {
-            if (layer instanceof L.Marker) {
+            if (layer instanceof L.Marker || layer instanceof L.Polygon || layer instanceof L.Polyline || layer instanceof L.Circle || layer instanceof L.Rectangle) {
                 const layerGeometry = layer.toGeoJSON().geometry;
-                return booleanPointInPolygon(layerGeometry, lassoPolygonGeometry);
+                return boolean_within(layerGeometry, lassoPolygonGeometry);
             }
             return false;
         });
@@ -135,3 +138,65 @@ const Lasso = L.Handler.extend({
 (L as any).lasso = (map: L.Map, options: L.LassoOptions) => {
     return new Lasso(map, options);
 };
+
+
+(L as any).Control.Lasso = L.Control.extend({
+    options: {
+        polygon: {
+            color: '#00C3FF',
+            weight: 2,
+        },
+        cursor: 'crosshair',
+        position: 'topright'
+    } as L.LassoOptions,
+
+    initialize: function(options?: L.LassoOptions) {
+        L.Util.setOptions(this, options);
+    },
+    onAdd: function(map: L.Map) {
+        const lasso = L.lasso(map, this.options);
+        this.lasso = lasso;
+
+        var div = L.DomUtil.create('div', 'leaflet-bar leaflet-control');
+        var link = L.DomUtil.create('a', 'icon-lasso',div);
+        link.id = "lasso-control"; //Needed to check if clicked on control or map
+
+        this._createCSS();
+
+        L.DomEvent.addListener(div, L.Browser.touch ? 'click' : 'focus', this._lassoToggle, this);
+
+        return div;
+    },
+
+  /*  onRemove: function(map: L.Map) {
+        // Nothing to do here
+    }, */
+    _createCSS : function(){
+        var css = document.createElement("style");
+        css.type = "text/css";
+        //Image with no copyright created by @Falke-Design
+        css.innerHTML = ".icon-lasso{background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAACXBIWXMAAAsSAAALEgHS3X78AAAD6UlEQVR4nO1b7XHbMAwFfP0fdYKqE8QbRJ0gGUEjaAR3A4/gbuBOUHWCKhs4E1SegD06jzmYpWhJpiRKNu58Tix+AA8gCQIQK6Xolml109LfAbgDcAfg5gH4NPQEzJwSkf4kRLR2NKmJqNLfSqlqaH7+4y/0McjML0SUQdinHkO8ApCSiPZKqToogxYFAQBC50T03NDkN74raFzSGtahreSLo+9PALG7mlEXaQD6fMD0BgIp8TkQ0ZaINChpl7ExZoZxK2vcGr8nfXl2ztm5g1twI/Q6KHPvVlFg/DMgJgEAWpWCay3lIYX2zJ1bQFQhAO+i9b2l8VEEd/BSWEooBgUAm5REPvg67AGCrZDdIABgQ6qF1oOu8QBAbK4FwTd4bq23SbXeks/OIPg0f7V5TQRCpz3BNdhamH30wgu+CwFC66VqD5IIByRas/eAYDbGqi8AW+FszEp4ocC6y1KQneW6z+YmvJDDLIVDVwBKdNzPVXghi/FbLjprp4AIM2fi6loMcusal8zN8eXirOp885jNrn/BAlKxnL17GWPj+As8viqlDguwAG3V+hR7JKJvSqmyqd1KmMnrUoQHGaEzX6OVaLAfg6sRyUSeUt+UKxGobDSTmZKR5yIAj/h79IhsDPSRFxg6+ho9AAukpI1IgydGxiY4dSRON+/SXgwAyE1sHbkF79JmeEuaPs91H4DWf+Ffk1nSgDwQ0RH5iUbZqgXcAI0MG/FbKn7f+i5DZo14PabISR/lb0qpjWETXq252LmSsidaCYfh8s0pbnKZuFHuEzNvmNl5MiR9YmmRLYHaxb8VJ3SG+UzD3ZyvwyI/UEPozMoZFE2xTjOADId1yuhGBMLO0raSUSE74HsGgDoPiZULsIISPkFqtUlEuOx0YsiHadeIakTC57bGPW0zAVRiP+yVXJhY+M6JHLFcCtfDvUAoahCseoXW0Wz0Oy1310O5WUQLgmX2ZddEzkffhoc2CJMUQ3h4kzt+v7S4ke/CRKWYaBtBYURmF2tcMda7bC0absWEk5TG4ISyS3Suury1BqAB+XIMIDCv7eAEsUTvHtDQoak8bhPSexSlcXadYBlqHu8p0BMIZRVIti9QeD/Hc/S1hVawgKDuufQDriqVZeYcAjeVyL4BGBc1lcaSKY8dolaYmTXgf0ykKFStcCIKpM33Q8vuR1EcXeEuMkhoDnyWCKB81wGUQV+aEhFaJ/mSlgPwYvyHZ8QN9SlS38RbY3hnYQ/NHyH8KVq0+DdGdCgMS+sRe1ImX8xYvAUw8wGb7Q9c88/2l1sAIEPBlPM0ur85GgEPk9IdgAh4mJTuAETAw3RERP8Ab2Uzgrad13wAAAAASUVORK5CYII=');-webkit-background-size: 22px;background-size: 22px;}";
+        document.body.appendChild(css);
+    },
+    _lassoToggle : function(){
+        if(this.lasso.enabled()){
+            this.lasso.disable();
+        }else{
+            this.lasso.enable();
+        }
+    },
+    enable : function(){
+        this.lasso.enable();
+    },
+    disable : function(){
+        this.lasso.disable();
+    },
+    enabled : function(){
+        return this.lasso.enabled();
+    }
+});
+
+(L as any).control.lasso = function(options: L.LassoOptions) {
+    return new (L as any).Control.Lasso(options);
+};
+

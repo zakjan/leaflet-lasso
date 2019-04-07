@@ -1,5 +1,5 @@
 module.exports = {
-    entry: './src/index.js',
+    entry: './src/index.ts',
     output: {
       path: __dirname + '/dist',
       filename: 'leaflet-lasso.min.js'
