@@ -27,6 +27,14 @@ map.on('lasso.finished', (event) => {
 });
 ```
 
+Or to use it as Leaflet-Control
+```
+const lasso = L.control.lasso().addTo(map);
+map.on('lasso.finished', (event) => {
+    console.log(event.layers);
+});
+```
+
 ## Methods
 
 - `enable()`
