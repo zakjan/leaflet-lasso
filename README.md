@@ -2,7 +2,25 @@
 
 True lasso selection plugin for Leaflet. [Demo](http://zakjan.github.io/leaflet-lasso/docs/index.html)
 
-![screenshot](http://zakjan.github.io/leaflet-lasso/docs/screenshot.png)
+![Screenshot](docs/screenshot.jpg)
+
+Supports all Leaflet vector layers:
+
+- Marker
+- CircleMarker
+- Circle
+- Polyline
+- Polyline with multiple segments
+- Rectangle
+- Polygon
+- Polygon with hole
+- Polygon with multiple segments
+- Polygon with multiple segments and holes
+
+Selection modes:
+
+- contain - entire shape must be in lasso polygon (default)
+- intersect - any part of shape can be in lasso polygon
 
 ## Install
 
@@ -14,26 +32,40 @@ import "leaflet-lasso"
 or
 
 ```
-<script src="https://unpkg.com/leaflet-lasso@latest/dist/leaflet-lasso.min.js"></script>
+<script src="https://unpkg.com/leaflet-lasso@latest/dist/leaflet-lasso.umd.min.js"></script>
 ```
 
 ## Usage
 
+### Control
+
 ```
-const lasso = L.lasso(map);
-lasso.enable();
-map.on('lasso.finished', (event) => {
+L.control.lasso().addTo(map);
+```
+
+### Control in intersect mode
+
+```
+L.control.lasso({ intersect: true }).addTo(map);
+```
+
+### Finished event
+
+```
+map.on('lasso.finished', event => {
     console.log(event.layers);
 });
 ```
 
-## Methods
+### Handler
 
-- `enable()`
-- `disable()`
+```
+const lasso = L.lasso(map);
+yourCustomButton.addEventListener('click', () => {
+    lasso.enable();
+});
+```
 
-## Events
+## Thanks
 
-- `lasso.finished`
-- `lasso.enabled`
-- `lasso.disabled`
+Icon by @Falke-Design
