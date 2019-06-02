@@ -1,4 +1,5 @@
 import L from 'leaflet';
+import { LassoPolygon } from './lasso-polygon';
 import { getLayersInPolygon } from './calc';
 
 describe('getLayersInPolygon', () => {
@@ -119,12 +120,12 @@ describe('getLayersInPolygon', () => {
         const ratio = options.ratio || 1;
         const inversedRatio = 1 / ratio;
 
-        return L.polygon([
+        return new LassoPolygon([
             [center.lat - latSmallDelta * scale * ratio, center.lng - lngSmallDelta * scale * inversedRatio],
             [center.lat - latSmallDelta * scale * ratio, center.lng + lngSmallDelta * scale * inversedRatio],
             [center.lat + latSmallDelta * scale * ratio, center.lng + lngSmallDelta * scale * inversedRatio],
             [center.lat + latSmallDelta * scale * ratio, center.lng - lngSmallDelta * scale * inversedRatio],
-        ]).toGeoJSON().geometry as GeoJSON.Polygon;
+        ]).toGeoJSON().geometry;
     }
 
     it('returns Marker in larger polygon', () => {
@@ -143,7 +144,7 @@ describe('getLayersInPolygon', () => {
 
     it('returns Markers in irregular larger polygon', () => {
         // plus shape
-        const lassoPolygon = L.polygon([
+        const lassoPolygon = new LassoPolygon([
             [markers[7].getLatLng().lat + latSmallDelta, markers[7].getLatLng().lng - lngSmallDelta],
             [markers[7].getLatLng().lat + latSmallDelta, markers[7].getLatLng().lng + lngSmallDelta],
             [markers[4].getLatLng().lat + latSmallDelta, markers[4].getLatLng().lng + lngSmallDelta],
@@ -156,7 +157,7 @@ describe('getLayersInPolygon', () => {
             [markers[3].getLatLng().lat - latSmallDelta, markers[3].getLatLng().lng - lngSmallDelta],
             [markers[3].getLatLng().lat + latSmallDelta, markers[3].getLatLng().lng - lngSmallDelta],
             [markers[4].getLatLng().lat + latSmallDelta, markers[4].getLatLng().lng - lngSmallDelta],
-        ]).toGeoJSON().geometry as GeoJSON.Polygon;
+        ]).toGeoJSON().geometry;
         const expectedResult = [markers[1], markers[3], markers[4], markers[5], markers[7]];
         const result = getLayersInPolygon(lassoPolygon, layers, { zoom: zoom });
         expect(result).toEqual(expectedResult);

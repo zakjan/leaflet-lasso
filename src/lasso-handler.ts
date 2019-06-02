@@ -1,4 +1,5 @@
 import L from 'leaflet';
+import { LassoPolygon } from './lasso-polygon';
 import { getLayersInPolygon } from './calc';
 import './lasso-handler.css';
 
@@ -31,8 +32,7 @@ export class LassoHandler extends L.Handler {
 
     private map: L.Map;
 
-    private polyline?: L.Polyline;
-    private polygon?: L.Polygon;
+    private polygon?: LassoPolygon;
 
     private onDocumentMouseMoveBound = this.onDocumentMouseMove.bind(this);
     private onDocumentMouseUpBound = this.onDocumentMouseUp.bind(this);
@@ -87,9 +87,7 @@ export class LassoHandler extends L.Handler {
             return;
         }
 
-        // separate polyline and polygon, so that it is rendered unclosed
-        this.polyline = L.polyline([event2.latlng], this.options.polygon).addTo(this.map);
-        this.polygon = L.polygon([event2.latlng], { ...this.options.polygon, weight: 0 }).addTo(this.map);
+        this.polygon = new LassoPolygon([event2.latlng], this.options.polygon).addTo(this.map);
 
         document.body.classList.add(ACTIVE_CLASS);
 
@@ -98,12 +96,11 @@ export class LassoHandler extends L.Handler {
     }
 
     private onDocumentMouseMove(event: Event) {
-        if (!this.polyline || !this.polygon) {
+        if (!this.polygon) {
             return;
         }
 
         const event2 = event as MouseEvent;
-        this.polyline.addLatLng(this.map.mouseEventToLatLng(event2));
         this.polygon.addLatLng(this.map.mouseEventToLatLng(event2));
 
         if (event2.buttons === 0) {
@@ -117,14 +114,14 @@ export class LassoHandler extends L.Handler {
     }
 
     private finish() {
-        if (!this.polyline || !this.polygon) {
+        if (!this.polygon) {
             return;
         }
 
-        const polygon = this.polygon.toGeoJSON().geometry as GeoJSON.Polygon;
+        const polygon = this.polygon.toGeoJSON().geometry;
         const layers: L.Layer[] = [];
         this.map.eachLayer(layer => {
-            if (layer === this.polyline || layer === this.polygon) {
+            if (layer === this.polygon || layer === this.polygon!.polyline || layer === this.polygon!.polygon) {
                 return;
             }
     
@@ -142,13 +139,11 @@ export class LassoHandler extends L.Handler {
         });
 
         this.map.fire(FINISHED_EVENT, {
-            latLngs: this.polygon.getLatLngs()[0],
+            latLngs: this.polygon.getLatLngs(),
             layers: selectedFeatures,
         } as LassoHandlerFinishedEventData);
 
-        this.map.removeLayer(this.polyline);
         this.map.removeLayer(this.polygon);
-        this.polyline = undefined;
         this.polygon = undefined;
 
         this.disable();
