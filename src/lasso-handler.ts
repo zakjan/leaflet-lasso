@@ -128,7 +128,7 @@ export class LassoHandler extends L.Handler {
                 return;
             }
     
-            if (layer instanceof L.Marker || layer instanceof L.Polyline) {
+            if (layer instanceof L.Marker || layer instanceof L.Path) {
                 layers.push(layer);
             } else if (L.MarkerCluster && layer instanceof L.MarkerCluster) {
                 layers.push(...layer.getAllChildMarkers());

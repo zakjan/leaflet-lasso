@@ -175,7 +175,7 @@
             map.eachLayer(layer => {
                 if (layer instanceof L.Marker) {
                     layer.setIcon(new L.Icon.Default());
-                } else if (layer instanceof L.Polyline) {
+                } else if (layer instanceof L.Path) {
                     layer.setStyle({ color: '#3388ff' });
                 }
             });
@@ -188,7 +188,7 @@
             layers.forEach(layer => {
                 if (layer instanceof L.Marker) {
                     layer.setIcon(new L.Icon.Default({ className: 'selected '}));
-                } else if (layer instanceof L.Polyline) {
+                } else if (layer instanceof L.Path) {
                     layer.setStyle({ color: '#ff4620' });
                 }
             });
