@@ -1,3 +1,6 @@
-/node_modules
-/.rpt2_cache
-/dist
+.idea
+.rpt2_cache
+
+node_modules
+dist
+coverage
