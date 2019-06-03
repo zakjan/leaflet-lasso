@@ -2,7 +2,7 @@
 
 True lasso selection plugin for Leaflet. [Demo](http://zakjan.github.io/leaflet-lasso/docs/index.html)
 
-![Screenshot](docs/screenshot.jpg)
+![Screenshot](http://zakjan.github.io/leaflet-lasso/docs/screenshot.jpg)
 
 Supports all Leaflet vector layers:
 
