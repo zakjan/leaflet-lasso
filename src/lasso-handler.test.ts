@@ -6,7 +6,7 @@ describe('LassoHandler', () => {
     let map: L.Map;
     let lasso: LassoHandler;
     
-	beforeEach(() => {
+    beforeEach(() => {
         container = document.createElement('div');
         container.style.width = '400px';
         container.style.height = '400px';
