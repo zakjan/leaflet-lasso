@@ -196,7 +196,7 @@
             lassoResult.innerHTML = layers.length ? `Selected ${layers.length} layers` : '';
         }
 
-        map.on('click', () => {
+        map.on('mousedown', () => {
             resetSelectedState();
         });
         map.on('lasso.finished', event => {
