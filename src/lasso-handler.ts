@@ -82,6 +82,12 @@ export class LassoHandler extends L.Handler {
     private onMapMouseDown(event: L.LeafletEvent) {
         const event2 = event as L.LeafletMouseEvent;
 
+        // activate lasso only for left mouse button click
+        if (event2.originalEvent.buttons !== 1) {
+            this.disable();
+            return;
+        }
+
         // skip clicks on controls
         if ((event2.originalEvent.target as HTMLElement).closest('.leaflet-control-container')) {
             return;
@@ -101,12 +107,15 @@ export class LassoHandler extends L.Handler {
         }
 
         const event2 = event as MouseEvent;
-        this.polygon.addLatLng(this.map.mouseEventToLatLng(event2));
 
-        if (event2.buttons === 0) {
+        // keep lasso active only if left mouse button is hold
+        if (event2.buttons !== 1) {
             console.warn('mouseup event was missed');
             this.finish();
+            return;
         }
+
+        this.polygon.addLatLng(this.map.mouseEventToLatLng(event2));
     }
 
     private onDocumentMouseUp() {
@@ -124,7 +133,7 @@ export class LassoHandler extends L.Handler {
             if (layer === this.polygon || layer === this.polygon!.polyline || layer === this.polygon!.polygon) {
                 return;
             }
-    
+
             if (layer instanceof L.Marker || layer instanceof L.Path) {
                 layers.push(layer);
             } else if (L.MarkerCluster && layer instanceof L.MarkerCluster) {
