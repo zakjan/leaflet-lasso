@@ -5,6 +5,10 @@
   "keywords": [
     "leaflet"
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/zakjan/leaflet-lasso.git"
+  },
   "author": "Jan Zak <zj@zakjan.cz>",
   "license": "MIT",
   "main": "dist/leaflet-lasso.cjs.js",
