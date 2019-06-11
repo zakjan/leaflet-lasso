@@ -84,6 +84,10 @@ export class LassoHandler extends L.Handler {
         this.map.fire(DISABLED_EVENT);
     }
 
+    getPolygon() {
+        return this.polygon;
+    }
+
     private onMapMouseDown(event: L.LeafletEvent) {
         const event2 = event as L.LeafletMouseEvent;
 

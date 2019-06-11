@@ -7,6 +7,10 @@ module.exports = {
   moduleNameMapper: {
     '\\.css$': 'identity-obj-proxy',
   },
+  reporters: [
+    'default',
+    'jest-simple-summary'
+  ],
   collectCoverage: true,
   collectCoverageFrom: [
     'src/**/*.ts',

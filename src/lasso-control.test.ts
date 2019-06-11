@@ -15,13 +15,37 @@ describe('LassoControl', () => {
         lasso = new LassoControl().addTo(map);
     });
 
-    it('toggles handler', () => {
+    it('setOptions method allows updating options', () => {
+        lasso.setOptions({ intersect: true });
+        expect(lasso.options.intersect).toEqual(true);
+    });
+
+    it('enable method enables handler', () => {
+        lasso.enable();
+        expect(lasso.enabled()).toEqual(true);
+    });
+
+    it('enable method enables handler', () => {
+        lasso.enable();
+        lasso.disable();
+        expect(lasso.enabled()).toEqual(false);
+    });
+
+    it('toggle method toggles handler', () => {
+        lasso.toggle();
+        expect(lasso.enabled()).toEqual(true);
+
+        lasso.toggle();
+        expect(lasso.enabled()).toEqual(false);
+    });
+
+    it('clicking button toggles handler', () => {
         const button = container.querySelector('.leaflet-control-lasso') as HTMLElement;
 
         button.click();
-        expect(lasso.enabled()).toBe(true);
+        expect(lasso.enabled()).toEqual(true);
 
         button.click();
-        expect(lasso.enabled()).toBe(false);
+        expect(lasso.enabled()).toEqual(false);
     });
 });
