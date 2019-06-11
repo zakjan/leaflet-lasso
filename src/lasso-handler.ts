@@ -68,6 +68,11 @@ export class LassoHandler extends L.Handler {
     }
 
     removeHooks() {
+        if (this.polygon) {
+            this.map.removeLayer(this.polygon);
+            this.polygon = undefined;
+        }
+
         this.map.off('mousedown', this.onMapMouseDown, this);
         document.removeEventListener('mousemove', this.onDocumentMouseMoveBound);
         document.removeEventListener('mouseup', this.onDocumentMouseUpBound);
@@ -151,9 +156,6 @@ export class LassoHandler extends L.Handler {
             latLngs: this.polygon.getLatLngs(),
             layers: selectedFeatures,
         } as LassoHandlerFinishedEventData);
-
-        this.map.removeLayer(this.polygon);
-        this.polygon = undefined;
 
         this.disable();
     }
