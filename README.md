@@ -37,32 +37,52 @@ or
 
 ## Usage
 
+For detailed API, please see exported TypeScript typings.
+
+### Handler
+
+Use for custom activation.
+
+```
+interface LassoHandlerOptions {
+    polygon?: L.PolylineOptions,
+    intersect?: boolean;
+}
+```
+
+```
+const lasso = L.lasso(map, options);
+yourCustomButton.addEventListener('click', () => {
+    lasso.enable();
+});
+```
+
 ### Control
 
-```
-L.control.lasso().addTo(map);
-```
-
-### Control in intersect mode
+Use for default control.
 
 ```
-L.control.lasso({ intersect: true }).addTo(map);
+type LassoControlOptions = LassoHandlerOptions & L.ControlOptions;
+```
+
+```
+L.control.lasso(options).addTo(map);
 ```
 
 ### Finished event
 
+Listen for this event to receive matching Leaflet layers.
+
 ```
-map.on('lasso.finished', event => {
+interface LassoHandlerFinishedEventData {
+    latLngs: L.LatLng[];
+    layers: L.Layer[];
+}
+```
+
+```
+map.on('lasso.finished', (event: LassoHandlerFinishedEventData) => {
     console.log(event.layers);
-});
-```
-
-### Handler
-
-```
-const lasso = L.lasso(map);
-yourCustomButton.addEventListener('click', () => {
-    lasso.enable();
 });
 ```
 
