@@ -2,10 +2,13 @@ import L from 'leaflet';
 import { LassoPolygon } from './lasso-polygon';
 import { getLayersInPolygon } from './calc';
 import './lasso-handler.css';
+import {LassoControl} from "./lasso-control";
 
 export interface LassoHandlerOptions {
     polygon?: L.PolylineOptions,
     intersect?: boolean;
+    title?: string;
+    mobileMsg?: string
 }
 
 interface LassoHandlerFinishedEventData {
@@ -30,9 +33,12 @@ export class LassoHandler extends L.Handler {
         intersect: false,
     };
 
+
     private map: L.Map;
 
     private polygon?: LassoPolygon;
+
+    private lassoControl?: LassoControl;
 
     private onDocumentMouseMoveBound = this.onDocumentMouseMove.bind(this);
     private onDocumentMouseUpBound = this.onDocumentMouseUp.bind(this);
@@ -58,34 +64,77 @@ export class LassoHandler extends L.Handler {
     
     addHooks() {
         this.map.getPane('mapPane');
-        this.map.on('mousedown', this.onMapMouseDown, this);
-        
+        this.lassoControl = new LassoControl(this.options);
+
+        if(L.Browser.mobile) {
+            this.polygon = new LassoPolygon([], this.options.polygon).addTo(this.map);
+            this.map.on('click', this.createVertex, this);
+
+            if(this.lassoControl && this.options.mobileMsg) {
+                this.lassoControl.showMsg(this.options.mobileMsg);
+            }
+        }else {
+            this.map.on('mousedown', this.onMapMouseDown, this);
+        }
         const mapContainer = this.map.getContainer();
         mapContainer.classList.add(ACTIVE_CLASS);
 
         this.map.dragging.disable();
         this.map.fire(ENABLED_EVENT);
+
+        const btn = L.DomUtil.get('lasso-control');
+        if(btn) {
+            L.DomUtil.addClass(btn, 'lasso-control-active');
+        }
     }
 
     removeHooks() {
+
+        if(L.Browser.mobile) {
+            this.map.off('click', this.createVertex, this);
+            this.finishLasso();
+        }else {
+            this.map.off('mousedown', this.onMapMouseDown, this);
+            document.removeEventListener('mousemove', this.onDocumentMouseMoveBound);
+            document.removeEventListener('mouseup', this.onDocumentMouseUpBound);
+        }
+
+        //Because finishLasso needs the polygon
         if (this.polygon) {
             this.map.removeLayer(this.polygon);
             this.polygon = undefined;
         }
-
-        this.map.off('mousedown', this.onMapMouseDown, this);
-        document.removeEventListener('mousemove', this.onDocumentMouseMoveBound);
-        document.removeEventListener('mouseup', this.onDocumentMouseUpBound);
 
         this.map.getContainer().classList.remove(ACTIVE_CLASS);
         document.body.classList.remove(ACTIVE_CLASS);
 
         this.map.dragging.enable();
         this.map.fire(DISABLED_EVENT);
+
+
+        if(this.lassoControl) {
+            this.lassoControl.hideMsg();
+        }
+        const btn = L.DomUtil.get('lasso-control');
+        if(btn) {
+            L.DomUtil.removeClass(btn, 'lasso-control-active');
+        }
     }
 
     getPolygon() {
         return this.polygon;
+    }
+
+    private createVertex(event: L.LeafletEvent){
+        if (!this.polygon) {
+            return;
+        }
+        const event2 = event as L.LeafletMouseEvent;
+        this.polygon.addLatLng(event2.latlng);
+    }
+
+    private finishLasso() {
+        this.finish();
     }
 
     private onMapMouseDown(event: L.LeafletEvent) {
@@ -134,6 +183,8 @@ export class LassoHandler extends L.Handler {
     private finish() {
         if (!this.polygon) {
             return;
+        } else if (this.polygon && this.polygon.getLatLngs().length == 0){
+            return
         }
 
         const polygon = this.polygon.toGeoJSON().geometry;

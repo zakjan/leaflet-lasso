@@ -1,4 +1,50 @@
 .leaflet-control-lasso {
     background: inline('./lasso-control.png');
     background-size: 22px;
+    background-color: #fff;
+}
+.lasso-control-active{
+    background-color: #dedede !important;
+}
+
+#lasso-control-msg-box{
+    display: none;
+    position: absolute;
+    top: 0;
+    height: 30px;
+}
+
+#lasso-control-msg-a{
+    height: 30px;
+    vertical-align: middle;
+    line-height: 30px;
+    color: rgb(255, 255, 255);
+    padding: 0 10px;
+    background-color: rgb(100, 100, 100);
+    display: inline-block;
+    width: auto;
+    text-align: center;
+    white-space: nowrap;
+    cursor: pointer;
+    font-size: 12.5px;
+}
+
+.lasso-box-right{
+    right: 30px;
+}
+
+.lasso-box-left{
+    left: 30px;
+}
+
+.lasso-control-msg-right{
+    border-radius: 3px 0 0 3px !important;
+}
+
+.lasso-control-msg-left{
+    border-radius: 0 3px 3px 0 !important;
+}
+
+.showBox{
+    display: block !important;
 }

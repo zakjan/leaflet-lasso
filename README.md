@@ -69,6 +69,27 @@ type LassoControlOptions = LassoHandlerOptions & L.ControlOptions;
 L.control.lasso(options).addTo(map);
 ```
 
+
+Display a message with:
+```
+lassoControl.showMsg('Your msg');
+```
+
+On mobile devices the message "**Click the Button to finish**" shows, because they have to click the control to finish the lasso.
+if the option mobileMsg is "", nothing is showing. Or you can replace it with your custom text.
+```
+L.control.lasso({mobileMsg: 'Your mobile text'}).addTo(map);
+```
+
+
+### Available options:
+* **position**: ['topleft','topright','bottomleft','bottomright']
+* **title**: 'Your Hover title'
+* **polygon**: Leaflet polygon style options [www.leaflet.js](https://leafletjs.com/reference-1.5.0.html#polygon)
+* **intersect**: Boolean
+* **mobileMsg**: 'Your mobile decive button message' // "" > Empty string disables the message
+
+
 ### Finished event
 
 Listen for this event to receive matching Leaflet layers.
@@ -85,6 +106,16 @@ map.on('lasso.finished', (event: LassoHandlerFinishedEventData) => {
     console.log(event.layers);
 });
 ```
+
+### Other events
+
+```
+map.on('lasso.enabled',function);
+```
+```
+map.on('lasso.disabled',function);
+```
+
 
 ## Thanks
 
