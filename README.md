@@ -1,8 +1,26 @@
 # leaflet-lasso
 
-True lasso selection plugin for Leaflet. [Demo](http://zakjan.github.io/leaflet-lasso/docs/index.html)
+True lasso selection plugin for Leaflet. [Demo](http://zakjan.github.io/leaflet-lasso/)
 
-![screenshot](http://zakjan.github.io/leaflet-lasso/docs/screenshot.png)
+<img src="docs/screenshot@2x.jpg" alt="Screenshot" width="640" height="320">
+
+Supports all Leaflet vector layers:
+
+- Marker
+- CircleMarker
+- Circle
+- Polyline
+- Polyline with multiple segments
+- Rectangle
+- Polygon
+- Polygon with hole
+- Polygon with multiple segments
+- Polygon with multiple segments and holes
+
+Selection modes:
+
+- contain - entire shape must be in lasso polygon (default)
+- intersect - any part of shape can be in lasso polygon
 
 ## Install
 
@@ -14,34 +32,60 @@ import "leaflet-lasso"
 or
 
 ```
-<script src="https://unpkg.com/leaflet-lasso@latest/dist/leaflet-lasso.min.js"></script>
+<script src="https://unpkg.com/leaflet-lasso@2.0.4/dist/leaflet-lasso.umd.min.js"></script>
 ```
 
 ## Usage
 
+For detailed API, please see exported TypeScript typings.
+
+### Handler
+
+Use for custom activation.
+
 ```
-const lasso = L.lasso(map);
-lasso.enable();
-map.on('lasso.finished', (event) => {
+interface LassoHandlerOptions {
+    polygon?: L.PolylineOptions,
+    intersect?: boolean;
+}
+```
+
+```
+const lasso = L.lasso(map, options);
+yourCustomButton.addEventListener('click', () => {
+    lasso.enable();
+});
+```
+
+### Control
+
+Use for default control.
+
+```
+type LassoControlOptions = LassoHandlerOptions & L.ControlOptions;
+```
+
+```
+L.control.lasso(options).addTo(map);
+```
+
+### Finished event
+
+Listen for this event to receive matching Leaflet layers.
+
+```
+interface LassoHandlerFinishedEventData {
+    latLngs: L.LatLng[];
+    layers: L.Layer[];
+}
+```
+
+```
+map.on('lasso.finished', (event: LassoHandlerFinishedEventData) => {
     console.log(event.layers);
 });
 ```
 
-Or to use it as Leaflet-Control
-```
-const lasso = L.control.lasso().addTo(map);
-map.on('lasso.finished', (event) => {
-    console.log(event.layers);
-});
-```
+## Thanks
 
-## Methods
-
-- `enable()`
-- `disable()`
-
-## Events
-
-- `lasso.finished`
-- `lasso.enabled`
-- `lasso.disabled`
+Icon by @Falke-Design
