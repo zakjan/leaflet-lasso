@@ -40,6 +40,8 @@ export class LassoHandler extends L.Handler {
 
     private lassoControl?: LassoControl;
 
+    private wasDragging?: boolean;
+
     private onDocumentMouseMoveBound = this.onDocumentMouseMove.bind(this);
     private onDocumentMouseUpBound = this.onDocumentMouseUp.bind(this);
 
@@ -47,6 +49,7 @@ export class LassoHandler extends L.Handler {
         super(map);
         
         this.map = map;
+        this.wasDragging = true;
         L.Util.setOptions(this, options);
     }
 
@@ -79,6 +82,7 @@ export class LassoHandler extends L.Handler {
         const mapContainer = this.map.getContainer();
         mapContainer.classList.add(ACTIVE_CLASS);
 
+        this.wasDragging = this.map.dragging.enabled();
         this.map.dragging.disable();
         this.map.fire(ENABLED_EVENT);
 
@@ -108,7 +112,8 @@ export class LassoHandler extends L.Handler {
         this.map.getContainer().classList.remove(ACTIVE_CLASS);
         document.body.classList.remove(ACTIVE_CLASS);
 
-        this.map.dragging.enable();
+        this.wasDragging ? this.map.dragging.enable() : this.map.dragging.disable();
+
         this.map.fire(DISABLED_EVENT);
 
 
