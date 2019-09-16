@@ -19,9 +19,20 @@ function circleToGeoJSONGeometry(latLng: L.LatLng, radius: number) {
     return circleToPolygon(L.GeoJSON.latLngToCoords(latLng), radius);
 }
 
+function polygonContains(polygon: GeoJSON.Polygon, layerGeometry: GeoJSON.GeometryObject) {
+    const polygonTerraformerGeometry = new Terraformer.Primitive(polygon);
+    return polygonTerraformerGeometry.contains(layerGeometry);
+}
+
+function polygonIntersects(polygon: GeoJSON.Polygon, layerGeometry: GeoJSON.GeometryObject) {
+    const polygonTerraformerGeometry = new Terraformer.Primitive(polygon);
+    return layerGeometry.type === "Point" ?
+        polygonTerraformerGeometry.contains(layerGeometry) :
+        polygonTerraformerGeometry.intersects(layerGeometry);
+}
+
 export function getLayersInPolygon(polygon: GeoJSON.Polygon, layers: L.Layer[], options: { zoom?: number, crs?: L.CRS, intersect?: boolean } = {}) {
     const crs = options.crs || L.CRS.EPSG3857;
-    const polygonGeometry = new Terraformer.Primitive(polygon);
 
     const selectedLayers = layers.filter(layer => {
         let layerGeometry: GeoJSON.GeometryObject;
@@ -45,9 +56,9 @@ export function getLayersInPolygon(polygon: GeoJSON.Polygon, layers: L.Layer[], 
             return false;
         }
 
-        return options.intersect && layerGeometry.type !== "Point" ?
-            polygonGeometry.intersects(layerGeometry) :
-            polygonGeometry.contains(layerGeometry);
+        return options.intersect ?
+            polygonIntersects(polygon, layerGeometry) :
+            polygonContains(polygon, layerGeometry);
     });
     
     return selectedLayers;
