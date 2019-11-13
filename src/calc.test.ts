@@ -116,8 +116,8 @@ describe('getLayersInPolygon', () => {
     ];
 
     function createPolygon(center: L.LatLng, options: {scale?: number, ratio?: number} = {}) {
-        const scale = options.scale || 1;
-        const ratio = options.ratio || 1;
+        const scale = options.scale ?? 1;
+        const ratio = options.ratio ?? 1;
         const inversedRatio = 1 / ratio;
 
         return new LassoPolygon([

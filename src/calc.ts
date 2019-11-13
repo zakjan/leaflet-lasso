@@ -32,8 +32,6 @@ function polygonIntersects(polygon: GeoJSON.Polygon, layerGeometry: GeoJSON.Geom
 }
 
 export function getLayersInPolygon(polygon: GeoJSON.Polygon, layers: L.Layer[], options: { zoom?: number, crs?: L.CRS, intersect?: boolean } = {}) {
-    const crs = options.crs || L.CRS.EPSG3857;
-
     const selectedLayers = layers.filter(layer => {
         let layerGeometry: GeoJSON.GeometryObject;
 
@@ -43,6 +41,7 @@ export function getLayersInPolygon(polygon: GeoJSON.Polygon, layers: L.Layer[], 
             layerGeometry = circleToGeoJSONGeometry(latLng, radius);
         } else if (layer instanceof L.CircleMarker) {
             if (options.zoom != undefined) {
+                const crs = options.crs ?? L.CRS.EPSG3857;
                 const latLng = layer.getLatLng();
                 const radius = getCircleMarkerRadius(layer, crs, options.zoom);
                 layerGeometry = circleToGeoJSONGeometry(latLng, radius);
