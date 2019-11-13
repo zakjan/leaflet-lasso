@@ -4,6 +4,7 @@ import { getLayersInPolygon } from './calc';
 
 describe('getLayersInPolygon', () => {
     const zoom = 13;
+    const crs = L.CRS.EPSG3857;
 
     // the same layers as in demo page
     const startLatLng = [51.5, -0.11];
@@ -131,14 +132,14 @@ describe('getLayersInPolygon', () => {
     it('returns Marker in larger polygon', () => {
         const lassoPolygon = createPolygon(markers[0].getLatLng());
         const expectedResult = [markers[0]];
-        const result = getLayersInPolygon(lassoPolygon, layers, { zoom: zoom });
+        const result = getLayersInPolygon(lassoPolygon, layers, { zoom: zoom, crs: crs });
         expect(result).toEqual(expectedResult);
     });
 
     it('returns Markers in larger polygon', () => {
         const lassoPolygon = createPolygon(markers[4].getLatLng(), { scale: 6 });
         const expectedResult = markers;
-        const result = getLayersInPolygon(lassoPolygon, layers, { zoom: zoom });
+        const result = getLayersInPolygon(lassoPolygon, layers, { zoom: zoom, crs: crs });
         expect(result).toEqual(expectedResult);
     });
 
@@ -159,196 +160,196 @@ describe('getLayersInPolygon', () => {
             [markers[4].getLatLng().lat + latSmallDelta, markers[4].getLatLng().lng - lngSmallDelta],
         ]).toGeoJSON().geometry;
         const expectedResult = [markers[1], markers[3], markers[4], markers[5], markers[7]];
-        const result = getLayersInPolygon(lassoPolygon, layers, { zoom: zoom });
+        const result = getLayersInPolygon(lassoPolygon, layers, { zoom: zoom, crs: crs });
         expect(result).toEqual(expectedResult);
     });
 
     it('returns CircleMarker in larger polygon', () => {
         const lassoPolygon = createPolygon(circleMarker.getLatLng(), { scale: 1.2 });
         const expectedResult = [circleMarker];
-        const result = getLayersInPolygon(lassoPolygon, layers, { zoom: zoom });
+        const result = getLayersInPolygon(lassoPolygon, layers, { zoom: zoom, crs: crs });
         expect(result).toEqual(expectedResult);
     });
 
     it('does not return CircleMarker in smaller polygon', () => {
         const lassoPolygon = createPolygon(circleMarker.getLatLng(), { scale: 0.8 });
         const expectedResult: L.Layer[] = [];
-        const result = getLayersInPolygon(lassoPolygon, layers, { zoom: zoom });
+        const result = getLayersInPolygon(lassoPolygon, layers, { zoom: zoom, crs: crs });
         expect(result).toEqual(expectedResult);
     });
 
     it('returns CircleMarker with intersection', () => {
         const lassoPolygon = createPolygon(circleMarker.getLatLng(), { ratio: 0.5 });
         const expectedResult = [circleMarker];
-        const result = getLayersInPolygon(lassoPolygon, layers, { zoom: zoom, intersect: true });
+        const result = getLayersInPolygon(lassoPolygon, layers, { zoom: zoom, crs: crs, intersect: true });
         expect(result).toEqual(expectedResult);
     });
 
     it('returns Circle in larger polygon', () => {
         const lassoPolygon = createPolygon(circle.getLatLng(), { scale: 1.2 });
         const expectedResult = [circle];
-        const result = getLayersInPolygon(lassoPolygon, layers, { zoom: zoom });
+        const result = getLayersInPolygon(lassoPolygon, layers, { zoom: zoom, crs: crs });
         expect(result).toEqual(expectedResult);
     });
 
     it('does not return Circle in smaller polygon', () => {
         const lassoPolygon = createPolygon(circle.getLatLng(), { scale: 0.8 });
         const expectedResult: L.Layer[] = [];
-        const result = getLayersInPolygon(lassoPolygon, layers, { zoom: zoom });
+        const result = getLayersInPolygon(lassoPolygon, layers, { zoom: zoom, crs: crs });
         expect(result).toEqual(expectedResult);
     });
 
     it('returns Circle with intersection', () => {
         const lassoPolygon = createPolygon(circle.getLatLng(), { ratio: 0.5 });
         const expectedResult = [circle];
-        const result = getLayersInPolygon(lassoPolygon, layers, { zoom: zoom, intersect: true });
+        const result = getLayersInPolygon(lassoPolygon, layers, { zoom: zoom, crs: crs, intersect: true });
         expect(result).toEqual(expectedResult);
     });
 
     it('returns Polyline in larger polygon', () => {
         const lassoPolygon = createPolygon(polyline.getBounds().getCenter(), { scale: 1.2 });
         const expectedResult = [polyline];
-        const result = getLayersInPolygon(lassoPolygon, layers, { zoom: zoom });
+        const result = getLayersInPolygon(lassoPolygon, layers, { zoom: zoom, crs: crs });
         expect(result).toEqual(expectedResult);
     });
 
     it('does not return Polyline in smaller polygon', () => {
         const lassoPolygon = createPolygon(polyline.getBounds().getCenter(), { scale: 0.8 });
         const expectedResult: L.Layer[] = [];
-        const result = getLayersInPolygon(lassoPolygon, layers, { zoom: zoom });
+        const result = getLayersInPolygon(lassoPolygon, layers, { zoom: zoom, crs: crs });
         expect(result).toEqual(expectedResult);
     });
 
     it('returns Polyline with intersection', () => {
         const lassoPolygon = createPolygon(polyline.getBounds().getCenter(), { ratio: 0.5 });
         const expectedResult = [polyline];
-        const result = getLayersInPolygon(lassoPolygon, layers, { zoom: zoom, intersect: true });
+        const result = getLayersInPolygon(lassoPolygon, layers, { zoom: zoom, crs: crs, intersect: true });
         expect(result).toEqual(expectedResult);
     });
 
     it('returns multi Polyline in larger polygon', () => {
         const lassoPolygon = createPolygon(multiPolyline.getBounds().getCenter(), { scale: 1.2 });
         const expectedResult = [multiPolyline];
-        const result = getLayersInPolygon(lassoPolygon, layers, { zoom: zoom });
+        const result = getLayersInPolygon(lassoPolygon, layers, { zoom: zoom, crs: crs });
         expect(result).toEqual(expectedResult);
     });
 
     it('does not return multi Polyline in smaller polygon', () => {
         const lassoPolygon = createPolygon(multiPolyline.getBounds().getCenter(), { scale: 0.8 });
         const expectedResult: L.Layer[] = [];
-        const result = getLayersInPolygon(lassoPolygon, layers, { zoom: zoom });
+        const result = getLayersInPolygon(lassoPolygon, layers, { zoom: zoom, crs: crs });
         expect(result).toEqual(expectedResult);
     });
 
     it('returns multi Polyline with intersection', () => {
         const lassoPolygon = createPolygon(multiPolyline.getBounds().getCenter(), { ratio: 0.5 });
         const expectedResult = [multiPolyline];
-        const result = getLayersInPolygon(lassoPolygon, layers, { zoom: zoom, intersect: true });
+        const result = getLayersInPolygon(lassoPolygon, layers, { zoom: zoom, crs: crs, intersect: true });
         expect(result).toEqual(expectedResult);
     });
 
     it('returns Rectangle in larger polygon', () => {
         const lassoPolygon = createPolygon(rectangle.getBounds().getCenter(), { scale: 1.2 });
         const expectedResult = [rectangle];
-        const result = getLayersInPolygon(lassoPolygon, layers, { zoom: zoom });
+        const result = getLayersInPolygon(lassoPolygon, layers, { zoom: zoom, crs: crs });
         expect(result).toEqual(expectedResult);
     });
 
     it('does not return Rectangle in smaller polygon', () => {
         const lassoPolygon = createPolygon(rectangle.getBounds().getCenter(), { scale: 0.8 });
         const expectedResult: L.Layer[] = [];
-        const result = getLayersInPolygon(lassoPolygon, layers, { zoom: zoom });
+        const result = getLayersInPolygon(lassoPolygon, layers, { zoom: zoom, crs: crs });
         expect(result).toEqual(expectedResult);
     });
 
     it('returns Rectangle with intersection', () => {
         const lassoPolygon = createPolygon(rectangle.getBounds().getCenter(), { ratio: 0.5 });
         const expectedResult = [rectangle];
-        const result = getLayersInPolygon(lassoPolygon, layers, { zoom: zoom, intersect: true });
+        const result = getLayersInPolygon(lassoPolygon, layers, { zoom: zoom, crs: crs, intersect: true });
         expect(result).toEqual(expectedResult);
     });
 
     it('returns Polygon in larger polygon', () => {
         const lassoPolygon = createPolygon(polygon.getBounds().getCenter(), { scale: 1.2 });
         const expectedResult = [polygon];
-        const result = getLayersInPolygon(lassoPolygon, layers, { zoom: zoom });
+        const result = getLayersInPolygon(lassoPolygon, layers, { zoom: zoom, crs: crs });
         expect(result).toEqual(expectedResult);
     });
 
     it('does not return Polygon in smaller polygon', () => {
         const lassoPolygon = createPolygon(polygon.getBounds().getCenter(), { scale: 0.8 });
         const expectedResult: L.Layer[] = [];
-        const result = getLayersInPolygon(lassoPolygon, layers, { zoom: zoom });
+        const result = getLayersInPolygon(lassoPolygon, layers, { zoom: zoom, crs: crs });
         expect(result).toEqual(expectedResult);
     });
 
     it('returns Polygon with intersection', () => {
         const lassoPolygon = createPolygon(polygon.getBounds().getCenter(), { ratio: 0.5 });
         const expectedResult = [polygon];
-        const result = getLayersInPolygon(lassoPolygon, layers, { zoom: zoom, intersect: true });
+        const result = getLayersInPolygon(lassoPolygon, layers, { zoom: zoom, crs: crs, intersect: true });
         expect(result).toEqual(expectedResult);
     });
 
     it('returns holed Polygon in larger polygon', () => {
         const lassoPolygon = createPolygon(holedPolygon.getBounds().getCenter(), { scale: 1.2 });
         const expectedResult = [holedPolygon];
-        const result = getLayersInPolygon(lassoPolygon, layers, { zoom: zoom });
+        const result = getLayersInPolygon(lassoPolygon, layers, { zoom: zoom, crs: crs });
         expect(result).toEqual(expectedResult);
     });
 
     it('does not return holed Polygon in smaller polygon', () => {
         const lassoPolygon = createPolygon(holedPolygon.getBounds().getCenter(), { scale: 0.8 });
         const expectedResult: L.Layer[] = [];
-        const result = getLayersInPolygon(lassoPolygon, layers, { zoom: zoom });
+        const result = getLayersInPolygon(lassoPolygon, layers, { zoom: zoom, crs: crs });
         expect(result).toEqual(expectedResult);
     });
 
     it('returns holed Polygon with intersection', () => {
         const lassoPolygon = createPolygon(holedPolygon.getBounds().getCenter(), { ratio: 0.5 });
         const expectedResult = [holedPolygon];
-        const result = getLayersInPolygon(lassoPolygon, layers, { zoom: zoom, intersect: true });
+        const result = getLayersInPolygon(lassoPolygon, layers, { zoom: zoom, crs: crs, intersect: true });
         expect(result).toEqual(expectedResult);
     });
 
     it('returns multi Polygon in larger polygon', () => {
         const lassoPolygon = createPolygon(multiPolygon.getBounds().getCenter(), { scale: 1.2 });
         const expectedResult = [multiPolygon];
-        const result = getLayersInPolygon(lassoPolygon, layers, { zoom: zoom });
+        const result = getLayersInPolygon(lassoPolygon, layers, { zoom: zoom, crs: crs });
         expect(result).toEqual(expectedResult);
     });
 
     it('does not return multi Polygon in smaller polygon', () => {
         const lassoPolygon = createPolygon(multiPolygon.getBounds().getCenter(), { scale: 0.8 });
         const expectedResult: L.Layer[] = [];
-        const result = getLayersInPolygon(lassoPolygon, layers, { zoom: zoom });
+        const result = getLayersInPolygon(lassoPolygon, layers, { zoom: zoom, crs: crs });
         expect(result).toEqual(expectedResult);
     });
 
     it('returns multi Polygon with intersection', () => {
         const lassoPolygon = createPolygon(multiPolygon.getBounds().getCenter(), { ratio: 0.5 });
         const expectedResult = [multiPolygon];
-        const result = getLayersInPolygon(lassoPolygon, layers, { zoom: zoom, intersect: true });
+        const result = getLayersInPolygon(lassoPolygon, layers, { zoom: zoom, crs: crs, intersect: true });
         expect(result).toEqual(expectedResult);
     });
 
     it('returns holed multi Polygon in larger polygon', () => {
         const lassoPolygon = createPolygon(holedMultiPolygon.getBounds().getCenter(), { scale: 1.2 });
         const expectedResult = [holedMultiPolygon];
-        const result = getLayersInPolygon(lassoPolygon, layers, { zoom: zoom });
+        const result = getLayersInPolygon(lassoPolygon, layers, { zoom: zoom, crs: crs });
         expect(result).toEqual(expectedResult);
     });
 
     it('does not return holed multi Polygon in smaller polygon', () => {
         const lassoPolygon = createPolygon(holedMultiPolygon.getBounds().getCenter(), { scale: 0.8 });
         const expectedResult: L.Layer[] = [];
-        const result = getLayersInPolygon(lassoPolygon, layers, { zoom: zoom });
+        const result = getLayersInPolygon(lassoPolygon, layers, { zoom: zoom, crs: crs });
         expect(result).toEqual(expectedResult);
     });
 
     it('returns holed multi Polygon with intersection', () => {
         const lassoPolygon = createPolygon(holedMultiPolygon.getBounds().getCenter(), { ratio: 0.5 });
         const expectedResult = [holedMultiPolygon];
-        const result = getLayersInPolygon(lassoPolygon, layers, { zoom: zoom, intersect: true });
+        const result = getLayersInPolygon(lassoPolygon, layers, { zoom: zoom, crs: crs, intersect: true });
         expect(result).toEqual(expectedResult);
     });
 });

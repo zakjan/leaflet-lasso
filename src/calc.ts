@@ -40,13 +40,12 @@ export function getLayersInPolygon(polygon: GeoJSON.Polygon, layers: L.Layer[], 
             const radius = layer.getRadius();
             layerGeometry = circleToGeoJSONGeometry(latLng, radius);
         } else if (layer instanceof L.CircleMarker) {
-            if (options.zoom != undefined) {
-                const crs = options.crs ?? L.CRS.EPSG3857;
+            if (options.zoom != undefined && options.crs != undefined) {
                 const latLng = layer.getLatLng();
-                const radius = getCircleMarkerRadius(layer, crs, options.zoom);
+                const radius = getCircleMarkerRadius(layer, options.crs, options.zoom);
                 layerGeometry = circleToGeoJSONGeometry(latLng, radius);
             } else {
-                console.warn("Zoom is required for calculating CircleMarker polygon, falling back to center point only");
+                console.warn("Zoom and CRS is required for calculating CircleMarker polygon, falling back to center point only");
                 layerGeometry = layer.toGeoJSON().geometry;
             }
         } else if (layer instanceof L.Marker || layer instanceof L.Polyline) {
