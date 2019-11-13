@@ -21,25 +21,25 @@
     "prepublishOnly": "npm run build"
   },
   "devDependencies": {
-    "@types/jest": "^24.0.18",
-    "@types/leaflet": "^1.5.1",
+    "@types/jest": "^24.0.23",
+    "@types/leaflet": "^1.5.5",
     "@types/leaflet.markercluster": "^1.4.0",
-    "autoprefixer": "^9.6.1",
+    "autoprefixer": "^9.7.1",
     "identity-obj-proxy": "^3.0.0",
     "jest": "^24.9.0",
     "jest-simple-summary": "^1.0.2",
     "leaflet": "^1.5.1",
     "leaflet.markercluster": "^1.4.1",
     "postcss-assets": "^5.0.0",
-    "rollup": "^1.21.3",
+    "rollup": "^1.27.0",
     "rollup-plugin-commonjs": "^10.1.0",
     "rollup-plugin-node-resolve": "^5.2.0",
     "rollup-plugin-postcss": "^2.0.3",
     "rollup-plugin-terser": "^5.1.2",
-    "rollup-plugin-typescript2": "^0.24.2",
-    "rollup-plugin-visualizer": "^2.6.0",
+    "rollup-plugin-typescript2": "^0.25.2",
+    "rollup-plugin-visualizer": "^2.7.2",
     "ts-jest": "^24.1.0",
-    "typescript": "^3.6.3"
+    "typescript": "^3.7.2"
   },
   "peerDependencies": {
     "leaflet": "^1.0.0"
