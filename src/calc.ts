@@ -15,8 +15,26 @@ function getCircleMarkerRadius(circleMarker: L.CircleMarker, crs: L.CRS, zoom: n
 function circleToGeoJSONGeometry(latLng: L.LatLng, radius: number) {
     // Terraformer result is incorrect, see https://github.com/Esri/terraformer/issues/321
     // return new Terraformer.Circle(L.GeoJSON.latLngToCoords(latLng), radius).geometry;
-
     return circleToPolygon(L.GeoJSON.latLngToCoords(latLng), radius);
+}
+
+function layerToGeoJSONGeometry(layer: L.Layer, options: { zoom?: number, crs?: L.CRS } = {}) {
+    if (layer instanceof L.Circle) {
+        const latLng = layer.getLatLng();
+        const radius = layer.getRadius();
+        return circleToGeoJSONGeometry(latLng, radius);
+    } else if (layer instanceof L.CircleMarker) {
+        if (options.zoom != undefined && options.crs != undefined) {
+            const latLng = layer.getLatLng();
+            const radius = getCircleMarkerRadius(layer, options.crs, options.zoom);
+            return circleToGeoJSONGeometry(latLng, radius);
+        } else {
+            console.warn("Zoom and CRS is required for calculating CircleMarker polygon, falling back to center point only");
+            return layer.toGeoJSON().geometry;
+        }
+    } else if (layer instanceof L.Marker || layer instanceof L.Polyline) {
+        return layer.toGeoJSON().geometry;
+    }
 }
 
 function polygonContains(polygon: GeoJSON.Polygon, layerGeometry: GeoJSON.GeometryObject) {
@@ -33,24 +51,8 @@ function polygonIntersects(polygon: GeoJSON.Polygon, layerGeometry: GeoJSON.Geom
 
 export function getLayersInPolygon(polygon: GeoJSON.Polygon, layers: L.Layer[], options: { zoom?: number, crs?: L.CRS, intersect?: boolean } = {}) {
     const selectedLayers = layers.filter(layer => {
-        let layerGeometry: GeoJSON.GeometryObject;
-
-        if (layer instanceof L.Circle) {
-            const latLng = layer.getLatLng();
-            const radius = layer.getRadius();
-            layerGeometry = circleToGeoJSONGeometry(latLng, radius);
-        } else if (layer instanceof L.CircleMarker) {
-            if (options.zoom != undefined && options.crs != undefined) {
-                const latLng = layer.getLatLng();
-                const radius = getCircleMarkerRadius(layer, options.crs, options.zoom);
-                layerGeometry = circleToGeoJSONGeometry(latLng, radius);
-            } else {
-                console.warn("Zoom and CRS is required for calculating CircleMarker polygon, falling back to center point only");
-                layerGeometry = layer.toGeoJSON().geometry;
-            }
-        } else if (layer instanceof L.Marker || layer instanceof L.Polyline) {
-            layerGeometry = layer.toGeoJSON().geometry;
-        } else {
+        const layerGeometry = layerToGeoJSONGeometry(layer, options);
+        if (!layerGeometry) {
             return false;
         }
 
