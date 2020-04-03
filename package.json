@@ -11,7 +11,7 @@
   "main": "dist/leaflet-lasso.cjs.js",
   "module": "dist/leaflet-lasso.esm.js",
   "browser": "dist/leaflet-lasso.umd.min.js",
-  "types": "dist/leaflet-lasso.d.ts",
+  "types": "dist/index.d.ts",
   "scripts": {
     "build": "rm -rf dist && rollup -c",
     "test": "jest",
