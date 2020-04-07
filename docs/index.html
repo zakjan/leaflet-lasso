@@ -101,10 +101,12 @@
             [latLng[0] + latSmallDelta, latLng[1] + lngSmallDelta],
         ]))([startLatLng[0], startLatLng[1] + lngDelta * 3]);
         const polygon = (latLng => L.polygon([
-            [latLng[0] - latSmallDelta, latLng[1] - lngSmallDelta],
-            [latLng[0] + latSmallDelta, latLng[1] - lngSmallDelta],
-            [latLng[0] + latSmallDelta, latLng[1] + lngSmallDelta],
-            [latLng[0] - latSmallDelta, latLng[1] + lngSmallDelta],
+            [
+                [latLng[0] - latSmallDelta, latLng[1] - lngSmallDelta],
+                [latLng[0] + latSmallDelta, latLng[1] - lngSmallDelta],
+                [latLng[0] + latSmallDelta, latLng[1] + lngSmallDelta],
+                [latLng[0] - latSmallDelta, latLng[1] + lngSmallDelta],
+            ],
         ]))([startLatLng[0], startLatLng[1] + lngDelta * 4]);
         const holedPolygon = (latLng => L.polygon([
             [
@@ -122,16 +124,20 @@
         ]))([startLatLng[0], startLatLng[1] + lngDelta * 5]);
         const multiPolygon = (latLng => L.polygon([
             [
-                [latLng[0] - latSmallDelta, latLng[1] - lngSmallDelta],
-                [latLng[0] - latSmallDelta, latLng[1]],
-                [latLng[0], latLng[1]],
-                [latLng[0], latLng[1] - lngSmallDelta],
+                [
+                    [latLng[0] - latSmallDelta, latLng[1] - lngSmallDelta],
+                    [latLng[0] - latSmallDelta, latLng[1]],
+                    [latLng[0], latLng[1]],
+                    [latLng[0], latLng[1] - lngSmallDelta],
+                ],
             ],
             [
-                [latLng[0], latLng[1]],
-                [latLng[0], latLng[1] + lngSmallDelta],
-                [latLng[0] + latSmallDelta, latLng[1] + lngSmallDelta],
-                [latLng[0] + latSmallDelta, latLng[1]],
+                [
+                    [latLng[0], latLng[1]],
+                    [latLng[0], latLng[1] + lngSmallDelta],
+                    [latLng[0] + latSmallDelta, latLng[1] + lngSmallDelta],
+                    [latLng[0] + latSmallDelta, latLng[1]],
+                ],
             ],
         ]))([startLatLng[0], startLatLng[1] + lngDelta * 6]);
         const holedMultiPolygon = (latLng => L.polygon([
