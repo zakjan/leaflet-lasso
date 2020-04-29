@@ -32,7 +32,7 @@ import "leaflet-lasso"
 or
 
 ```
-<script src="https://unpkg.com/leaflet-lasso@2.0.8/dist/leaflet-lasso.umd.min.js"></script>
+<script src="https://unpkg.com/leaflet-lasso@2.0.9/dist/leaflet-lasso.umd.min.js"></script>
 ```
 
 ## Usage
