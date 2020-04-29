@@ -36,6 +36,7 @@ export class LassoControl extends L.Control {
         button.setAttribute('aria-label', button.title);
 
         L.DomEvent.addListener(button, 'click', this.toggle, this);
+        L.DomEvent.disableClickPropagation(button);
 
         return container;
     }
