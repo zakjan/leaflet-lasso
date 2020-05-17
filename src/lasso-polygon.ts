@@ -1,4 +1,5 @@
 import L from 'leaflet';
+import * as GeoJSON from 'geojson';
 
 export class LassoPolygon extends L.Layer {
     readonly polyline: L.Polyline;

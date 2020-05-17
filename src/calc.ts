@@ -1,4 +1,5 @@
 import L from 'leaflet';
+import * as GeoJSON from 'geojson';
 import Terraformer from 'terraformer';
 import circleToPolygon from 'circle-to-polygon';
 
