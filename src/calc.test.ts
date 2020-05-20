@@ -1,4 +1,4 @@
-import L from 'leaflet';
+import * as L from 'leaflet';
 import { LassoPolygon } from './lasso-polygon';
 import { getLayersInPolygon } from './calc';
 

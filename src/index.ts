@@ -1,4 +1,4 @@
-import L from 'leaflet';
+import 'leaflet';
 import { LassoHandler } from './lasso-handler';
 import { LassoControl } from './lasso-control';
 
@@ -18,11 +18,13 @@ declare module 'leaflet' {
     }
 }
 
-L.Lasso = LassoHandler;
-L.lasso = (...args: ConstructorParameters<typeof LassoHandler>) => new LassoHandler(...args);
+if (typeof window.L !== 'undefined') {
+    window.L.Lasso = LassoHandler;
+    window.L.lasso = (...args: ConstructorParameters<typeof LassoHandler>) => new LassoHandler(...args);
 
-L.Control.Lasso = LassoControl;
-L.control.lasso = (...args: ConstructorParameters<typeof LassoControl>) => new LassoControl(...args);
+    window.L.Control.Lasso = LassoControl;
+    window.L.control.lasso = (...args: ConstructorParameters<typeof LassoControl>) => new LassoControl(...args);
+}
 
 export * from './lasso-handler';
 export * from './lasso-control';

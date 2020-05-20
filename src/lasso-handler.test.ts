@@ -1,4 +1,4 @@
-import L from 'leaflet';
+import * as L from 'leaflet';
 import { LassoHandler, ENABLED_EVENT, DISABLED_EVENT, FINISHED_EVENT, ACTIVE_CLASS } from './lasso-handler';
 import { LassoPolygon } from './lasso-polygon';
 

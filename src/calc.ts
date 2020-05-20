@@ -1,4 +1,4 @@
-import L from 'leaflet';
+import * as L from 'leaflet';
 import * as GeoJSON from 'geojson';
 import { toCircle, contains, intersects } from '@terraformer/spatial';
 

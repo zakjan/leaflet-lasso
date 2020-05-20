@@ -1,4 +1,4 @@
-import L from 'leaflet';
+import * as L from 'leaflet';
 import { LassoControl } from './lasso-control';
 
 describe('LassoControl', () => {
