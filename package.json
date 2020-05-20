@@ -44,7 +44,7 @@
     "leaflet": "^1.0.0"
   },
   "dependencies": {
-    "circle-to-polygon": "^2.0.2",
-    "terraformer": "^1.0.12"
+    "@terraformer/spatial": "^2.0.7",
+    "@types/terraformer__spatial": "^2.0.0"
   }
 }

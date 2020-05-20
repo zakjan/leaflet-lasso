@@ -1,7 +1,6 @@
 import L from 'leaflet';
 import * as GeoJSON from 'geojson';
-import Terraformer from 'terraformer';
-import circleToPolygon from 'circle-to-polygon';
+import { toCircle, contains, intersects } from '@terraformer/spatial';
 
 function getCircleMarkerRadius(circleMarker: L.CircleMarker, crs: L.CRS, zoom: number) {
     const latLng = circleMarker.getLatLng();
@@ -14,9 +13,7 @@ function getCircleMarkerRadius(circleMarker: L.CircleMarker, crs: L.CRS, zoom: n
 }
 
 function circleToGeoJSONGeometry(latLng: L.LatLng, radius: number) {
-    // Terraformer result is incorrect, see https://github.com/Esri/terraformer/issues/321
-    // return new Terraformer.Circle(L.GeoJSON.latLngToCoords(latLng), radius).geometry;
-    return circleToPolygon(L.GeoJSON.latLngToCoords(latLng), radius);
+    return toCircle(L.GeoJSON.latLngToCoords(latLng), radius).geometry;
 }
 
 function layerToGeoJSONGeometry(layer: L.Layer, options: { zoom?: number, crs?: L.CRS } = {}) {
@@ -39,15 +36,13 @@ function layerToGeoJSONGeometry(layer: L.Layer, options: { zoom?: number, crs?: 
 }
 
 function polygonContains(polygon: GeoJSON.Polygon, layerGeometry: GeoJSON.GeometryObject) {
-    const polygonTerraformerGeometry = new Terraformer.Primitive(polygon);
-    return polygonTerraformerGeometry.contains(layerGeometry);
+    return contains(polygon, layerGeometry);
 }
 
 function polygonIntersects(polygon: GeoJSON.Polygon, layerGeometry: GeoJSON.GeometryObject) {
-    const polygonTerraformerGeometry = new Terraformer.Primitive(polygon);
     return layerGeometry.type === "Point" ?
-        polygonTerraformerGeometry.contains(layerGeometry) :
-        polygonTerraformerGeometry.intersects(layerGeometry);
+        contains(polygon, layerGeometry) :
+        intersects(polygon, layerGeometry);
 }
 
 export function getLayersInPolygon(polygon: GeoJSON.Polygon, layers: L.Layer[], options: { zoom?: number, crs?: L.CRS, intersect?: boolean } = {}) {
