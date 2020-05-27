@@ -2,6 +2,12 @@ import * as L from 'leaflet';
 import { LassoHandler, ENABLED_EVENT, DISABLED_EVENT, FINISHED_EVENT, ACTIVE_CLASS } from './lasso-handler';
 import { LassoPolygon } from './lasso-polygon';
 
+function getLayers(map: L.Map): L.Layer[] {
+    const layers: L.Layer[] = [];
+    map.eachLayer(layer => layers.push(layer));
+    return layers;
+}
+
 describe('LassoHandler', () => {
     let container: HTMLElement;
     let map: L.Map;
@@ -84,7 +90,8 @@ describe('LassoHandler', () => {
     it('adds polygon to map after enabling and activating', () => {
         lasso.enable();
         container.dispatchEvent(new MouseEvent('mousedown', { buttons: 1, clientX: 0, clientY: 0 }));
-        expect(lasso.getPolygon()).toBeInstanceOf(LassoPolygon);
+        const polygons = getLayers(map).filter(layer => layer instanceof LassoPolygon);
+        expect(polygons.length).toEqual(1);
     });
 
     it('removes active class from map container and document after disabling', () => {
@@ -99,6 +106,7 @@ describe('LassoHandler', () => {
         lasso.enable();
         container.dispatchEvent(new MouseEvent('mousedown', { buttons: 1, clientX: 0, clientY: 0 }));
         document.dispatchEvent(new MouseEvent('mouseup', { buttons: 1, clientX: 0, clientY: 0 }));
-        expect(lasso.getPolygon()).toBeUndefined();
+        const polygons = getLayers(map).filter(layer => layer instanceof LassoPolygon);
+        expect(polygons.length).toEqual(0);
     });
 })

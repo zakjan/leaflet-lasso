@@ -11,20 +11,20 @@
   "main": "dist/leaflet-lasso.cjs.js",
   "module": "dist/leaflet-lasso.esm.js",
   "browser": "dist/leaflet-lasso.umd.min.js",
-  "types": "dist/index.d.ts",
+  "types": "dist/leaflet-lasso.d.ts",
   "scripts": {
-    "build": "rm -rf dist && rollup -c",
+    "build": "rimraf dist && rollup -c",
     "test": "jest",
     "prepublishOnly": "npm run build"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^11.1.0",
     "@rollup/plugin-node-resolve": "^7.1.3",
-    "@types/circle-to-polygon": "^2.0.0",
     "@types/geojson": "^7946.0.7",
     "@types/jest": "^25.2.1",
     "@types/leaflet": "^1.5.12",
     "@types/leaflet.markercluster": "^1.4.2",
+    "@types/terraformer__spatial": "^2.0.0",
     "autoprefixer": "^9.7.6",
     "identity-obj-proxy": "^3.0.0",
     "jest": "^25.5.1",
@@ -32,7 +32,9 @@
     "leaflet": "^1.6.0",
     "leaflet.markercluster": "^1.4.1",
     "postcss-assets": "^5.0.0",
+    "rimraf": "^3.0.2",
     "rollup": "^2.7.3",
+    "rollup-plugin-dts": "^1.4.7",
     "rollup-plugin-postcss": "^3.1.1",
     "rollup-plugin-terser": "^5.3.0",
     "rollup-plugin-typescript2": "^0.27.0",
@@ -44,7 +46,6 @@
     "leaflet": "^1.0.0"
   },
   "dependencies": {
-    "@terraformer/spatial": "^2.0.7",
-    "@types/terraformer__spatial": "^2.0.0"
+    "@terraformer/spatial": "^2.0.7"
   }
 }

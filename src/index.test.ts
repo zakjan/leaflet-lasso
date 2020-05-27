@@ -1,4 +1,4 @@
-import L from 'leaflet';
+import * as L from 'leaflet';
 import { LassoHandler, LassoControl } from './index';
 import './index';
 

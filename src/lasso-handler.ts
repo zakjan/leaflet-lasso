@@ -84,10 +84,6 @@ export class LassoHandler extends L.Handler {
         this.map.fire(DISABLED_EVENT);
     }
 
-    getPolygon() {
-        return this.polygon;
-    }
-
     private onMapMouseDown(event: L.LeafletEvent) {
         const event2 = event as L.LeafletMouseEvent;
 
@@ -136,7 +132,7 @@ export class LassoHandler extends L.Handler {
             return;
         }
 
-        const polygon = this.polygon.toGeoJSON().geometry;
+        const polygon = this.polygon.toGeoJSON().geometry as GeoJSON.Polygon;
         const layers: L.Layer[] = [];
         this.map.eachLayer(layer => {
             if (layer === this.polygon || layer === this.polygon!.polyline || layer === this.polygon!.polygon) {

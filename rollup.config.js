@@ -7,6 +7,7 @@ import visualizer from 'rollup-plugin-visualizer';
 import { terser } from 'rollup-plugin-terser';
 import autoprefixer from 'autoprefixer';
 import assets from 'postcss-assets';
+import dts from 'rollup-plugin-dts';
 
 const bundle = (format, filename, options = {}) => ({
   input: 'src/index.ts',
@@ -43,4 +44,15 @@ export default [
   bundle('es', pkg.module),
   bundle('umd', pkg.browser.replace('.min', ''), { resolve: true, stats: true }),
   bundle('umd', pkg.browser, { resolve: true, minimize: true }),
+  {
+    input: 'src/index.ts',
+    output: {
+      file: pkg.types,
+      format: 'es',
+    },
+    plugins: [
+      dts(),
+      postcss({ inject: false }),
+    ],
+  },
 ];

@@ -3,10 +3,8 @@
     "target": "es5",
     "module": "es2015",
     "lib": ["dom", "es2018"],
-    "esModuleInterop": true,
     "moduleResolution": "node",
     "outDir": "dist",
-    "declaration": true,
     "sourceMap": true,
     "strict": true,
     "noUnusedLocals": true,
@@ -16,7 +14,7 @@
     "src/**/*.ts"
   ],
   "exclude": [
-    "**/*.test.ts",
+    "src/**/*.test.ts",
     "node_modules"
   ]
 }
