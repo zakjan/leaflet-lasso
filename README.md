@@ -1,5 +1,9 @@
 # leaflet-lasso
 
+![](https://img.shields.io/npm/dm/leaflet-lasso)
+![](https://img.shields.io/david/zakjan/leaflet-lasso)
+![](https://img.shields.io/bundlephobia/min/leaflet-lasso)
+
 True lasso selection plugin for Leaflet. [Demo](http://zakjan.github.io/leaflet-lasso/)
 
 <img src="docs/screenshot@2x.jpg" alt="Screenshot" width="640" height="320">
