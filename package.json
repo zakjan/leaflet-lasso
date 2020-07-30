@@ -1,6 +1,6 @@
 {
   "name": "leaflet-lasso",
-  "version": "2.1.1",
+  "version": "2.1.2",
   "description": "Leaflet plugin for lasso selection",
   "keywords": [
     "leaflet"

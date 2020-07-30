@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.1.2
+
+- improved performance for lots of complex polygons by checking `contains` first, then checking `intersects`
+
 ## 2.1.1
 
 - improved performance for lots of complex polygons by checking the bounds first, then checking the full geometries
