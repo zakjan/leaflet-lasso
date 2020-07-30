@@ -30,16 +30,19 @@ Selection modes:
 
 ```
 npm install leaflet-lasso
-import "leaflet-lasso"
 ```
 
 or
 
 ```
-<script src="https://unpkg.com/leaflet-lasso@2.1.0/dist/leaflet-lasso.umd.min.js"></script>
+<script src="https://unpkg.com/leaflet-lasso@2.1.1/dist/leaflet-lasso.umd.min.js"></script>
 ```
 
 ## Usage
+
+```
+import "leaflet-lasso";
+```
 
 For detailed API, please see exported TypeScript typings.
 
