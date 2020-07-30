@@ -132,7 +132,7 @@ describe('getLayersInPolygon', () => {
             [center.lat - latSmallDelta * scale * ratio, center.lng + lngSmallDelta * scale * inversedRatio],
             [center.lat + latSmallDelta * scale * ratio, center.lng + lngSmallDelta * scale * inversedRatio],
             [center.lat + latSmallDelta * scale * ratio, center.lng - lngSmallDelta * scale * inversedRatio],
-        ]).toGeoJSON().geometry;
+        ]).polygon;
     }
 
     it('returns Marker in larger polygon', () => {
@@ -164,7 +164,7 @@ describe('getLayersInPolygon', () => {
             [markers[3].getLatLng().lat - latSmallDelta, markers[3].getLatLng().lng - lngSmallDelta],
             [markers[3].getLatLng().lat + latSmallDelta, markers[3].getLatLng().lng - lngSmallDelta],
             [markers[4].getLatLng().lat + latSmallDelta, markers[4].getLatLng().lng - lngSmallDelta],
-        ]).toGeoJSON().geometry;
+        ]).polygon;
         const expectedResult = [markers[1], markers[3], markers[4], markers[5], markers[7]];
         const result = getLayersInPolygon(lassoPolygon, layers, { zoom: zoom, crs: crs });
         expect(result).toEqual(expectedResult);

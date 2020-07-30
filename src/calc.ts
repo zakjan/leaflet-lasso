@@ -1,6 +1,12 @@
 import * as L from 'leaflet';
 import * as GeoJSON from 'geojson';
-import { toCircle, contains, intersects } from '@terraformer/spatial';
+import { calculateBounds, toCircle, contains, intersects } from '@terraformer/spatial';
+
+function geoJSONGeometryToBounds(geometry: GeoJSON.GeometryObject) {
+    const bounds = calculateBounds(geometry);
+    const leafletBounds = L.latLngBounds([bounds[1], bounds[0]], [bounds[3], bounds[2]]);
+    return leafletBounds;
+}
 
 function getCircleMarkerRadius(circleMarker: L.CircleMarker, crs: L.CRS, zoom: number) {
     const latLng = circleMarker.getLatLng();
@@ -45,16 +51,37 @@ function polygonIntersects(polygon: GeoJSON.Polygon, layerGeometry: GeoJSON.Geom
         intersects(polygon, layerGeometry);
 }
 
-export function getLayersInPolygon(polygon: GeoJSON.Polygon, layers: L.Layer[], options: { zoom?: number, crs?: L.CRS, intersect?: boolean } = {}) {
+export function getLayersInPolygon(polygon: L.Polygon, layers: L.Layer[], options: { zoom?: number, crs?: L.CRS, intersect?: boolean } = {}) {
+    const polygonGeometry = polygon.toGeoJSON().geometry as GeoJSON.Polygon;
+    const polygonBounds = polygon.getBounds();
+
     const selectedLayers = layers.filter(layer => {
-        const layerGeometry = layerToGeoJSONGeometry(layer, options);
-        if (!layerGeometry) {
+        // check bounds first (fast)
+        let layerGeometry;
+        let layerBounds;
+        if (layer instanceof L.Polyline) {
+            layerBounds = layer.getBounds();
+        } else {
+            layerGeometry = layerToGeoJSONGeometry(layer, options);
+            layerBounds = geoJSONGeometryToBounds(layerGeometry);
+        }
+
+        const boundsResult = options.intersect ?
+            polygonBounds.intersects(layerBounds) :
+            polygonBounds.contains(layerBounds);
+        if (!boundsResult) {
             return false;
         }
 
-        return options.intersect ?
-            polygonIntersects(polygon, layerGeometry) :
-            polygonContains(polygon, layerGeometry);
+        // check full geometry (slow)
+        if (!layerGeometry) {
+            layerGeometry = layerToGeoJSONGeometry(layer, options);
+        }
+
+        const geometryResult = options.intersect ?
+            polygonIntersects(polygonGeometry, layerGeometry) :
+            polygonContains(polygonGeometry, layerGeometry);
+        return geometryResult;
     });
     
     return selectedLayers;

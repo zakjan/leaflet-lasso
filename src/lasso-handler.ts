@@ -132,7 +132,6 @@ export class LassoHandler extends L.Handler {
             return;
         }
 
-        const polygon = this.polygon.toGeoJSON().geometry as GeoJSON.Polygon;
         const layers: L.Layer[] = [];
         this.map.eachLayer(layer => {
             if (layer === this.polygon || layer === this.polygon!.polyline || layer === this.polygon!.polygon) {
@@ -146,7 +145,7 @@ export class LassoHandler extends L.Handler {
             }
         });
 
-        const selectedFeatures = getLayersInPolygon(polygon, layers, {
+        const selectedFeatures = getLayersInPolygon(this.polygon.polygon, layers, {
             zoom: this.map.getZoom(),
             crs: this.map.options.crs,
             intersect: this.options.intersect,
