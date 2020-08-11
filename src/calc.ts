@@ -46,12 +46,9 @@ function polygonContains(polygon: GeoJSON.Polygon, layerGeometry: GeoJSON.Geomet
 }
 
 function polygonIntersects(polygon: GeoJSON.Polygon, layerGeometry: GeoJSON.GeometryObject) {
-    if (layerGeometry.type === "Point") {
-        return contains(polygon, layerGeometry);
-    }
-
-    // try contains first (fast), then intersects (slower)
-    return contains(polygon, layerGeometry) || intersects(polygon, layerGeometry);
+    return layerGeometry.type === "Point" ?
+        contains(polygon, layerGeometry) :
+        intersects(polygon, layerGeometry);
 }
 
 export function getLayersInPolygon(polygon: L.Polygon, layers: L.Layer[], options: { zoom?: number, crs?: L.CRS, intersect?: boolean } = {}) {
@@ -69,18 +66,22 @@ export function getLayersInPolygon(polygon: L.Polygon, layers: L.Layer[], option
             layerBounds = geoJSONGeometryToBounds(layerGeometry);
         }
 
-        if (!polygonBounds.intersects(layerBounds)) {
+        const boundsResult = options.intersect ?
+            polygonBounds.intersects(layerBounds) :
+            polygonBounds.contains(layerBounds);
+        if (!boundsResult) {
             return false;
         }
 
-        // check full geometry (slower)
+        // check full geometry (slow)
         if (!layerGeometry) {
             layerGeometry = layerToGeoJSONGeometry(layer, options);
         }
 
-        return options.intersect ?
+        const geometryResult = options.intersect ?
             polygonIntersects(polygonGeometry, layerGeometry) :
             polygonContains(polygonGeometry, layerGeometry);
+        return geometryResult;
     });
     
     return selectedLayers;
