@@ -1,5 +1,13 @@
 # Changelog
 
+## 2.2.0
+
+- added support for touch events
+
+## 2.1.3
+
+- reverted change 2.1.2, it's controversial
+
 ## 2.1.2
 
 - improved performance for lots of complex polygons by checking `contains` first, then checking `intersects`
