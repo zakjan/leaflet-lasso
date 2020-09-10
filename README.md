@@ -4,7 +4,9 @@
 [![](https://img.shields.io/david/zakjan/leaflet-lasso)](https://www.npmjs.com/package/leaflet-lasso)
 [![](https://img.shields.io/bundlephobia/min/leaflet-lasso)](https://www.npmjs.com/package/leaflet-lasso)
 
-True lasso selection plugin for Leaflet. [Demo](http://zakjan.github.io/leaflet-lasso/)
+Lasso selection plugin for Leaflet
+
+[Demo](http://zakjan.github.io/leaflet-lasso/)
 
 <img src="docs/screenshot@2x.jpg" alt="Screenshot" width="640" height="320">
 

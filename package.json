@@ -1,9 +1,10 @@
 {
   "name": "leaflet-lasso",
   "version": "2.2.0",
-  "description": "Leaflet plugin for lasso selection",
+  "description": "Lasso selection plugin for Leaflet",
   "keywords": [
-    "leaflet"
+    "leaflet",
+    "lasso"
   ],
   "license": "MIT",
   "author": "Jan Zak <zj@zakjan.cz>",
