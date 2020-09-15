@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Leaflet Lasso</title>
+    <title>leaflet-lasso</title>
     <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"></script>
     <script src="https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js"></script>
     <script src="https://unpkg.com/leaflet-lasso@2.2.1/dist/leaflet-lasso.umd.js"></script>
@@ -36,14 +36,15 @@
     </a>
     <div class="container">
         <h1>leaflet-lasso</h1>
-        <p>True lasso selection plugin for Leaflet</p>
+        <p>Lasso selection plugin for Leaflet</p>
         <hr>
 
         <div id="map"></div>
         <div id="sidebar">
             <div>
                 <button id="toggleLasso" type="button" class="btn btn-primary btn-sm">Toggle Lasso</button>
-                <label class="ml-3"><input type="radio" name="containOrIntersect" id="contain" checked> Contain</label>
+                <br><br>
+                <label><input type="radio" name="containOrIntersect" id="contain" checked> Contain</label>
                 <label class="ml-2"><input type="radio" name="containOrIntersect" id="intersect"> Intersect</label>
             </div>
             <br>
