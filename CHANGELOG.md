@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.2.2
+
+- prioritize check for MarkerCluster
+
 ## 2.2.0
 
 - added support for touch events
