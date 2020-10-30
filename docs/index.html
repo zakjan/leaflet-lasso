@@ -171,8 +171,10 @@
                 ],
             ],
         ]))([startLatLng[0], startLatLng[1] + lngDelta * 7]);
+        const markerClusterGroup = L.markerClusterGroup({ showCoverageOnHover: false, maxClusterRadius: 40 });
+        markerClusterGroup.addLayers(markers);
         const layers = [
-            ...markers,
+            markerClusterGroup,
             circleMarker,
             circle,
             polyline,

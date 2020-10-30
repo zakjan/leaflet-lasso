@@ -174,10 +174,10 @@ export class LassoHandler extends L.Handler {
                 return;
             }
 
-            if (layer instanceof L.Marker || layer instanceof L.Path) {
-                layers.push(layer);
-            } else if (L.MarkerCluster && layer instanceof L.MarkerCluster) {
+            if (L.MarkerCluster && layer instanceof L.MarkerCluster) {
                 layers.push(...layer.getAllChildMarkers());
+            } else if (layer instanceof L.Marker || layer instanceof L.Path) {
+                layers.push(layer);
             }
         });
 
