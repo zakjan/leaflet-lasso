@@ -1,14 +1,15 @@
 {
-  "name": "leaflet-lasso",
-  "version": "2.2.2",
+  "name": "@kaushik.thanki/leaflet-lasso",
+  "version": "1.0.0",
   "description": "Lasso selection plugin for Leaflet",
   "keywords": [
     "leaflet",
-    "lasso"
+    "lasso",
+    "kaushik"
   ],
   "license": "MIT",
-  "author": "Jan Zak <zj@zakjan.cz>",
-  "repository": "github:zakjan/leaflet-lasso",
+  "author": "Kaushik Thanki <thanki.kaushik@gmail.com>",
+  "repository": "github:Kaushik1987/leaflet-lasso",
   "main": "dist/leaflet-lasso.cjs.js",
   "module": "dist/leaflet-lasso.esm.js",
   "browser": "dist/leaflet-lasso.umd.min.js",
