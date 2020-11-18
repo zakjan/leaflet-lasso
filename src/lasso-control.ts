@@ -30,7 +30,7 @@ export class LassoControl extends L.Control {
 
         const container = L.DomUtil.create('div', 'leaflet-bar leaflet-control') as HTMLDivElement;
         const button = L.DomUtil.create('a', 'leaflet-control-lasso', container) as HTMLAnchorElement;
-        button.href = '#';
+        button.href = 'javascript:void(0)';
         button.title = 'Toggle Lasso';
         button.setAttribute('role', 'button');
         button.setAttribute('aria-label', button.title);
