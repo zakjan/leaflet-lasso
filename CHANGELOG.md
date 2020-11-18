@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.2.3
+
+- change button href from # to javascript:void(0), to prevent changing window location
+
 ## 2.2.2
 
 - prioritize check for MarkerCluster
