@@ -96,7 +96,7 @@ export class LassoHandler extends L.Handler {
         }
 
         // activate lasso only for left mouse button click
-        if (event instanceof MouseEvent && event.buttons !== 1) {
+        if (event instanceof MouseEvent && !(event as any)._simulated && event.buttons !== 1) {
             this.disable();
             return;
         }
@@ -130,7 +130,7 @@ export class LassoHandler extends L.Handler {
         }
 
         // keep lasso active only if left mouse button is hold
-        if (event instanceof MouseEvent && event.buttons !== 1) {
+        if (event instanceof MouseEvent && !(event as any)._simulated && event.buttons !== 1) {
             console.warn('mouseup event was missed');
             this.finish();
             return;
