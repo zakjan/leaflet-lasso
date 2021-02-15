@@ -1,5 +1,7 @@
 # Changelog
 
+## 2.2.4
+
 - ignore Leaflet simulated events
 
 ## 2.2.3
