@@ -65,9 +65,12 @@ export function getLayersInPolygon(polygon: L.Polygon, layers: L.Layer[], option
             layerGeometry = layerToGeoJSONGeometry(layer, options);
             layerBounds = geoJSONGeometryToBounds(layerGeometry);
         }
+
         // some bounds may be invalid, for example for empty polylines
-        if (!layerBounds?.isValid())
+        if (!layerBounds.isValid()) {
             return false;
+        }
+
         const boundsResult = options.intersect ?
             polygonBounds.intersects(layerBounds) :
             polygonBounds.contains(layerBounds);
