@@ -20,35 +20,35 @@
     "prepublishOnly": "npm run build"
   },
   "devDependencies": {
-    "@rollup/plugin-commonjs": "^17.1.0",
-    "@rollup/plugin-node-resolve": "^11.2.0",
-    "@types/geojson": "^7946.0.7",
-    "@types/jest": "^26.0.20",
-    "@types/leaflet": "^1.5.23",
-    "@types/leaflet.markercluster": "^1.4.3",
+    "@rollup/plugin-commonjs": "^19.0.2",
+    "@rollup/plugin-node-resolve": "^13.0.4",
+    "@types/geojson": "^7946.0.8",
+    "@types/jest": "^26.0.24",
+    "@types/leaflet": "^1.7.4",
+    "@types/leaflet.markercluster": "^1.4.5",
     "@types/terraformer__spatial": "^2.0.1",
-    "autoprefixer": "^10.2.4",
+    "autoprefixer": "^10.3.1",
     "identity-obj-proxy": "^3.0.0",
-    "jest": "^26.6.3",
+    "jest": "^27.0.6",
     "jest-simple-summary": "^1.0.2",
     "leaflet": "^1.7.1",
-    "leaflet.markercluster": "^1.4.1",
-    "postcss": "^8.2.6",
-    "postcss-assets": "^5.0.0",
+    "leaflet.markercluster": "^1.5.0",
+    "postcss": "^8.3.6",
+    "postcss-assets": "^6.0.0",
     "rimraf": "^3.0.2",
-    "rollup": "^2.39.0",
-    "rollup-plugin-dts": "^2.0.1",
+    "rollup": "^2.55.0",
+    "rollup-plugin-dts": "^3.0.2",
     "rollup-plugin-postcss": "^4.0.0",
     "rollup-plugin-terser": "^7.0.2",
-    "rollup-plugin-typescript2": "^0.29.0",
-    "rollup-plugin-visualizer": "^4.2.0",
-    "ts-jest": "^26.5.1",
-    "typescript": "^4.1.5"
+    "rollup-plugin-typescript2": "^0.30.0",
+    "rollup-plugin-visualizer": "^5.5.2",
+    "ts-jest": "^27.0.4",
+    "typescript": "^4.3.5"
   },
   "peerDependencies": {
     "leaflet": "^1.0.0"
   },
   "dependencies": {
-    "@terraformer/spatial": "^2.0.7"
+    "@terraformer/spatial": "^2.1.0"
   }
 }
