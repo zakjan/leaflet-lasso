@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.2.6
+
+- add title option
+
 ## 2.2.5
 
 - add invalid bounds checking
