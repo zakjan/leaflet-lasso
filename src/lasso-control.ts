@@ -2,11 +2,11 @@ import * as L from 'leaflet';
 import { LassoHandler, LassoHandlerOptions } from './lasso-handler';
 import './lasso-control.css';
 
-export interface LassoOptions  {
+export interface LassoControlOptionsData  {
     title?: string;
 }
 
-export type LassoControlOptions = LassoHandlerOptions & LassoOptions & L.ControlOptions;
+export type LassoControlOptions = L.ControlOptions & LassoControlOptionsData & LassoHandlerOptions;
 
 export class LassoControl extends L.Control {
     options: LassoControlOptions = {
@@ -36,7 +36,7 @@ export class LassoControl extends L.Control {
         const container = L.DomUtil.create('div', 'leaflet-bar leaflet-control') as HTMLDivElement;
         const button = L.DomUtil.create('a', 'leaflet-control-lasso', container) as HTMLAnchorElement;
         button.href = 'javascript:void(0)';
-        button.title = this.options.title ? this.options.title : 'Toggle Lasso';
+        button.title = this.options.title!;
         button.setAttribute('role', 'button');
         button.setAttribute('aria-label', button.title);
 

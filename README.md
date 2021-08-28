@@ -71,7 +71,11 @@ yourCustomButton.addEventListener('click', () => {
 Use for default control.
 
 ```
-type LassoControlOptions = LassoHandlerOptions & L.ControlOptions;
+export interface LassoControlOptionsData  {
+    title?: string;
+}
+
+export type LassoControlOptions = L.ControlOptions & LassoControlOptionsData & LassoHandlerOptions;
 ```
 
 ```
