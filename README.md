@@ -71,11 +71,11 @@ yourCustomButton.addEventListener('click', () => {
 Use for default control.
 
 ```
-export interface LassoControlOptionsData  {
+interface LassoControlOptionsData  {
     title?: string;
 }
 
-export type LassoControlOptions = L.ControlOptions & LassoControlOptionsData & LassoHandlerOptions;
+type LassoControlOptions = L.ControlOptions & LassoControlOptionsData & LassoHandlerOptions;
 ```
 
 ```
@@ -91,10 +91,12 @@ interface LassoHandlerFinishedEventData {
     latLngs: L.LatLng[];
     layers: L.Layer[];
 }
+
+type LassoHandlerFinishedEvent = L.LeafletEvent & LassoHandlerFinishedEventData;
 ```
 
 ```
-map.on('lasso.finished', (event: LassoHandlerFinishedEventData) => {
+map.on('lasso.finished', (event: LassoHandlerFinishedEvent) => {
     console.log(event.layers);
 });
 ```
