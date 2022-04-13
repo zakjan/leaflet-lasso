@@ -88,6 +88,7 @@ Listen for this event to receive matching Leaflet layers.
 
 ```
 interface LassoHandlerFinishedEventData {
+    originalEvent: MouseEvent;
     latLngs: L.LatLng[];
     layers: L.Layer[];
 }
