@@ -9,6 +9,7 @@ export interface LassoHandlerOptions {
 }
 
 interface LassoHandlerFinishedEventData {
+    originalEvent: MouseEvent;
     latLngs: L.LatLng[];
     layers: L.Layer[];
 }
@@ -132,7 +133,7 @@ export class LassoHandler extends L.Handler {
         // keep lasso active only if left mouse button is hold
         if (event instanceof MouseEvent && !(event as any)._simulated && event.buttons !== 1) {
             console.warn('mouseup event was missed');
-            this.finish();
+            this.finish(event);
             return;
         }
 
@@ -142,8 +143,8 @@ export class LassoHandler extends L.Handler {
         event.preventDefault();
     }
 
-    private onDocumentMouseUp(event: Event) {
-        this.finish();
+    private onDocumentMouseUp(event: MouseEvent | TouchEvent) {
+        this.finish(event);
 
         event.preventDefault();
     }
@@ -163,7 +164,7 @@ export class LassoHandler extends L.Handler {
         }
     }
 
-    private finish() {
+    private finish(event: MouseEvent | TouchEvent) {
         if (!this.polygon) {
             return;
         }
@@ -188,6 +189,7 @@ export class LassoHandler extends L.Handler {
         });
 
         this.map.fire(FINISHED_EVENT, {
+            originalEvent: event,
             latLngs: this.polygon.getLatLngs(),
             layers: selectedFeatures,
         } as LassoHandlerFinishedEventData);
