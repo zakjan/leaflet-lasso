@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.2.7
+
+- pass originalEvent to finished event
+
 ## 2.2.6
 
 - add title option
