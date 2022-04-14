@@ -91,6 +91,8 @@ export class LassoHandler extends L.Handler {
     }
 
     private onMapMouseDown(event: Event) {
+        event.stopPropagation();
+        
         let event2 = this.eventToMouseEvent('down', event);
         if (!event2) {
             return;
@@ -121,6 +123,8 @@ export class LassoHandler extends L.Handler {
     }
 
     private onDocumentMouseMove(event: Event) {
+        event.stopPropagation();
+        
         let event2 = this.eventToMouseEvent('move', event);
         if (!event2) {
             return;
@@ -145,7 +149,7 @@ export class LassoHandler extends L.Handler {
 
     private onDocumentMouseUp(event: MouseEvent | TouchEvent) {
         this.finish(event);
-
+        event.stopPropagation();
         event.preventDefault();
     }
 
