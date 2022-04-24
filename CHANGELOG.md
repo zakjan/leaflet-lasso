@@ -1,5 +1,7 @@
 # Changelog
 
+- stop mouse event propagation
+
 ## 2.2.7
 
 - pass originalEvent to finished event
