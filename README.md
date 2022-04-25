@@ -6,7 +6,7 @@
 
 Lasso selection plugin for Leaflet
 
-[Demo](http://zakjan.github.io/leaflet-lasso/)
+[Demo](https://zakjan.github.io/leaflet-lasso/)
 
 <img src="docs/screenshot@2x.jpg" alt="Screenshot" width="640" height="320">
 
