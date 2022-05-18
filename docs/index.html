@@ -183,7 +183,7 @@
 
         function resetSelectedState() {
             map.eachLayer(layer => {
-                if (layer instanceof L.Marker) {
+                if (layer instanceof L.Marker && !(layer instanceof L.MarkerCluster)) {
                     layer.setIcon(new L.Icon.Default());
                 } else if (layer instanceof L.Path) {
                     layer.setStyle({ color: '#3388ff' });
@@ -196,7 +196,7 @@
             resetSelectedState();
 
             layers.forEach(layer => {
-                if (layer instanceof L.Marker) {
+                if (layer instanceof L.Marker && !(layer instanceof L.MarkerCluster)) {
                     layer.setIcon(new L.Icon.Default({ className: 'selected '}));
                 } else if (layer instanceof L.Path) {
                     layer.setStyle({ color: '#ff4620' });
