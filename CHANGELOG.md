@@ -1,5 +1,7 @@
 # Changelog
 
+- call getBounds for all layers where available
+
 ## 2.2.8
 
 - stop mouse event propagation

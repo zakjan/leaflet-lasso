@@ -59,8 +59,8 @@ export function getLayersInPolygon(polygon: L.Polygon, layers: L.Layer[], option
         // check bounds first (fast)
         let layerGeometry;
         let layerBounds;
-        if (layer instanceof L.Polyline) {
-            layerBounds = layer.getBounds();
+        if (layer.hasOwnProperty('getBounds')) {
+            layerBounds = (layer as L.Layer & { getBounds: () => L.LatLngBounds }).getBounds();
         } else {
             layerGeometry = layerToGeoJSONGeometry(layer, options);
             layerBounds = geoJSONGeometryToBounds(layerGeometry);
