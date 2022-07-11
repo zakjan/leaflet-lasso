@@ -136,7 +136,8 @@ export class LassoHandler extends L.Handler {
 
         // keep lasso active only if left mouse button is hold
         if (event instanceof MouseEvent && !(event as any)._simulated && event.buttons !== 1) {
-            console.warn('mouseup event was missed');
+            // warning disabled as it causes confusion and the cause is unclear
+            // console.warn('mouseup event was missed');
             this.finish(event);
             return;
         }
