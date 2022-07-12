@@ -1,5 +1,7 @@
 # Changelog
 
+## 2.2.10
+
 - call getBounds for all layers where available
 
 ## 2.2.9
