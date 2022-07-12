@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.2.11
+
+- revert changes in 2.2.9 - 2.2.10
+- handle unknown layers gracefully
+
 ## 2.2.10
 
 - call getBounds for all layers where available
