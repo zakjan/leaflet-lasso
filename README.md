@@ -22,6 +22,7 @@ Supports all Leaflet vector layers:
 - Polygon with hole
 - Polygon with multiple segments
 - Polygon with multiple segments and holes
+- Custom layers can be supported if they inherit from the above layers, and have `getBounds` and `toGeoJSON` methods
 
 Selection modes:
 
