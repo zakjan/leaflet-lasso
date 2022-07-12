@@ -22,7 +22,7 @@ function circleToGeoJSONGeometry(latLng: L.LatLng, radius: number) {
     return toCircle(L.GeoJSON.latLngToCoords(latLng), radius).geometry;
 }
 
-function layerToGeoJSONGeometry(layer: L.Layer, options: { zoom?: number, crs?: L.CRS } = {}) {
+function layerToGeoJSONGeometry(layer: L.Layer, options: { zoom?: number, crs?: L.CRS } = {}): GeoJSON.Geometry | undefined {
     if (layer instanceof L.Circle) {
         const latLng = layer.getLatLng();
         const radius = layer.getRadius();
@@ -38,6 +38,9 @@ function layerToGeoJSONGeometry(layer: L.Layer, options: { zoom?: number, crs?: 
         }
     } else if (layer instanceof L.Marker || layer instanceof L.Polyline) {
         return layer.toGeoJSON().geometry;
+    } else {
+        console.warn("Layer GeoJSON geometry is not available", layer);
+        return undefined;
     }
 }
 
@@ -63,11 +66,13 @@ export function getLayersInPolygon(polygon: L.Polygon, layers: L.Layer[], option
             layerBounds = layer.getBounds();
         } else {
             layerGeometry = layerToGeoJSONGeometry(layer, options);
-            layerBounds = geoJSONGeometryToBounds(layerGeometry);
+            if (layerGeometry) {
+                layerBounds = geoJSONGeometryToBounds(layerGeometry);
+            }
         }
 
         // some bounds may be invalid, for example for empty polylines
-        if (!layerBounds.isValid()) {
+        if (!layerBounds || !layerBounds.isValid()) {
             return false;
         }
 
@@ -81,6 +86,9 @@ export function getLayersInPolygon(polygon: L.Polygon, layers: L.Layer[], option
         // check full geometry (slow)
         if (!layerGeometry) {
             layerGeometry = layerToGeoJSONGeometry(layer, options);
+        }
+        if (!layerGeometry) {
+            return false;
         }
 
         const geometryResult = options.intersect ?
