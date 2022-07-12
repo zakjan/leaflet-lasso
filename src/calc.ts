@@ -59,7 +59,7 @@ export function getLayersInPolygon(polygon: L.Polygon, layers: L.Layer[], option
         // check bounds first (fast)
         let layerGeometry;
         let layerBounds;
-        if (layer.hasOwnProperty('getBounds')) {
+        if ('getBounds' in layer) {
             layerBounds = (layer as L.Layer & { getBounds: () => L.LatLngBounds }).getBounds();
         } else {
             layerGeometry = layerToGeoJSONGeometry(layer, options);
