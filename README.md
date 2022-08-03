@@ -38,7 +38,7 @@ npm install leaflet-lasso
 or
 
 ```
-<script src="https://unpkg.com/leaflet-lasso@2.2.11/dist/leaflet-lasso.umd.min.js"></script>
+<script src="https://unpkg.com/leaflet-lasso@2.2.12/dist/leaflet-lasso.umd.min.js"></script>
 ```
 
 ## Usage
