@@ -1,5 +1,7 @@
 # Changelog
 
+- update dependencies
+
 ## 2.2.12
 
 - update dependencies, @terraformer/spatial 2.1.2 fixes #51
