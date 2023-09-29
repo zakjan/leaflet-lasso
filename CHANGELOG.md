@@ -1,5 +1,7 @@
 # Changelog
 
+## 2.2.13
+
 - update dependencies
 
 ## 2.2.12
